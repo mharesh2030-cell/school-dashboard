@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة إشراف التقويم المدرسي — مدارس محافظة بيش</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ══════════════ VERTICAL NAV — SLATE/FOREST THEME ══════════════ */
+:root{
+  --bg:#0f1923;
+  --bg2:#162130;
+  --bg3:#1d2d3e;
+  --nav-w:220px;
+  --s1:#1a3a2a;
+  --s2:#1f4d36;
+  --s3:#2e7d52;
+  --s4:#4caf7d;
+  --s5:#a8d5b5;
+  --s6:#d4edd9;
+  --b1:#0d2137;
+  --b2:#163352;
+  --b3:#1e5799;
+  --b4:#4a90d9;
+  --b5:#90c4f5;
+  --b6:#dbeeff;
+  --amber:#d97706;--amber2:#fbbf24;--amber3:#fef3c7;
+  --red:#b91c1c;--red2:#f87171;--red3:#fef2f2;
+  --ink:#e8f0e9;--ink2:#a8c4b0;--ink3:#6b9c7b;
+  --card:#1a2d20;--card2:#1e3528;
+  --line:rgba(78,160,120,.18);
+  --sh:0 4px 20px rgba(0,0,0,.35);
+  --shm:0 8px 32px rgba(0,0,0,.45);
+  --r:13px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+
+/* ══ TOPBAR ══ */
+.topbar{height:52px;background:rgba(13,33,55,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(74,144,217,.12);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:90;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--s3),var(--b3));display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.brand h1{font-size:.95rem;font-weight:900;color:#fff}
+.brand p{font-size:.68rem;color:var(--b5);font-weight:600}
+.top-actions{display:flex;gap:6px;align-items:center}
+.tbtn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--ink);border-radius:8px;padding:5px 11px;font-size:.75rem;font-weight:800;cursor:pointer;font-family:inherit;transition:.18s}
+.tbtn:hover{background:rgba(255,255,255,.12)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--s4);animation:lp 1.8s ease-in-out infinite;display:inline-block;margin-left:5px}
+@keyframes lp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+
+/* ══ LAYOUT SHELL ══ */
+.shell{display:flex;flex:1;min-height:0}
+
+/* ══ VERTICAL NAV ══ */
+.vnav{width:var(--nav-w);background:var(--bg2);border-left:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;flex-shrink:0;z-index:80}
+.vnav-section{padding:10px 10px 2px;font-size:.65rem;font-weight:900;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.vtab{display:flex;align-items:center;gap:9px;padding:10px 14px;font-size:.83rem;font-weight:700;color:var(--ink2);cursor:pointer;border:0;background:transparent;font-family:inherit;width:100%;text-align:right;border-radius:9px;margin:1px 6px;width:calc(100% - 12px);transition:.18s;position:relative}
+.vtab:hover{background:rgba(78,160,120,.1);color:var(--s5)}
+.vtab.active{background:linear-gradient(135deg,rgba(46,125,82,.35),rgba(30,87,153,.2));color:#fff;font-weight:900}
+.vtab.active::before{content:"";position:absolute;right:0;top:20%;bottom:20%;width:3px;background:linear-gradient(var(--s4),var(--b4));border-radius:0 3px 3px 0}
+.vtab .vt-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.vtab .vt-badge{margin-right:auto;background:rgba(255,255,255,.1);border-radius:999px;padding:1px 7px;font-size:.65rem;color:var(--ink3)}
+.vtab.active .vt-badge{background:rgba(78,160,120,.2);color:var(--s4)}
+.vnav-divider{height:1px;background:var(--line);margin:8px 12px}
+
+/* ══ MAIN CONTENT ══ */
+.content{flex:1;overflow-y:auto;padding:20px 22px 60px;min-width:0}
+.page{display:none;animation:fu .2s ease}
+.page.active{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ══ CARDS ══ */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+.card2{background:var(--card2)}
+.card h2{font-size:1rem;font-weight:900;color:var(--s5);margin-bottom:12px}
+.card h3{font-size:.9rem;font-weight:800;color:var(--b5);margin-bottom:10px}
+.card h4{font-size:.82rem;font-weight:800;color:var(--ink2);margin-bottom:8px}
+
+/* ══ SECTION HEADER ══ */
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.sec-hd h2{font-size:1.05rem;font-weight:900;color:#fff}
+.badge{border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:800}
+.bd-g{background:rgba(78,160,120,.15);border:1px solid rgba(78,160,120,.3);color:var(--s4)}
+.bd-b{background:rgba(74,144,217,.15);border:1px solid rgba(74,144,217,.3);color:var(--b4)}
+.bd-a{background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.3);color:var(--amber2)}
+.bd-r{background:rgba(185,28,28,.15);border:1px solid rgba(185,28,28,.3);color:var(--red2)}
+
+/* ══ HERO BAND ══ */
+.hero-band{background:linear-gradient(135deg,rgba(46,125,82,.12),rgba(30,87,153,.1));border:1px solid rgba(78,160,120,.15);border-radius:16px;padding:20px;margin-bottom:16px;display:grid;grid-template-columns:1fr 3fr;gap:16px;align-items:center}
+.hero-title h2{font-size:1.3rem;font-weight:900;color:#fff;line-height:1.2}
+.hero-title p{color:var(--ink2);font-size:.82rem;margin-top:5px}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.meta-chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--ink2);border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:800}
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.kpi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 10px;text-align:center;position:relative;overflow:hidden;transition:.2s}
+.kpi:hover{background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.kpi::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--s4),var(--b4))}
+.kpi-val{font-size:1.8rem;font-weight:900;color:#fff;display:block}
+.kpi-label{font-size:.68rem;color:var(--ink2);font-weight:700;display:block;margin-top:2px}
+.kpi-sub{font-size:.62rem;color:rgba(255,255,255,.3);display:block}
+
+/* ══ SUMMARY RIBBON ══ */
+.sum-ribbon{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.sum-tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;position:relative;overflow:hidden}
+.sum-tile::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--s4),var(--b4))}
+.sum-tile.warn::after{background:linear-gradient(90deg,var(--amber),var(--amber2))}
+.sum-tile.danger::after{background:linear-gradient(90deg,var(--red),var(--red2))}
+.sum-val{font-size:1.9rem;font-weight:900;color:var(--s5)}
+.sum-label{font-size:.72rem;color:var(--ink2);font-weight:700;margin-top:2px}
+.sum-icon{position:absolute;top:10px;left:10px;font-size:1.6rem;opacity:.08}
+
+/* ══ CHARTS ══ */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.chart-card h3{color:var(--b5);font-size:.85rem;font-weight:800;margin-bottom:10px}
+.ch-wrap{position:relative;height:250px}
+.ch-wrap-tall{position:relative;height:320px}
+
+/* ══ LEADERBOARD ══ */
+.lb{display:grid;gap:7px}
+.lb-row{display:grid;grid-template-columns:34px 1fr 170px 85px;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 13px;cursor:pointer;transition:.18s}
+.lb-row:hover{border-color:var(--s4);transform:translateX(-2px)}
+.lb-row.t1{background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(251,191,36,.06));border-color:rgba(217,119,6,.3)}
+.lb-row.t2{background:rgba(255,255,255,.04)}
+.lb-row.t3{background:rgba(255,255,255,.03)}
+.lb-rank{font-size:.95rem;font-weight:900;text-align:center;color:var(--ink)}
+.lb-name{font-size:.88rem;font-weight:800;color:#fff}
+.lb-name small{display:block;color:var(--ink2);font-size:.68rem;font-weight:600;margin-top:1px}
+.lb-bar-wrap{display:flex;align-items:center;gap:7px}
+.lb-bar-t{flex:1;height:9px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.lb-bar-f{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--s3),var(--b3));transition:width .7s}
+.lb-pct{font-size:.82rem;font-weight:900;color:var(--s4);min-width:36px}
+.lb-status{text-align:center}
+
+/* ══ STATUS PILLS ══ */
+.sp{font-size:.68rem;font-weight:800;border-radius:999px;padding:3px 9px;border:1px solid}
+.s-exc{background:rgba(46,125,82,.2);color:#6ee7a0;border-color:rgba(46,125,82,.4)}
+.s-gd{background:rgba(30,87,153,.2);color:#93c5fd;border-color:rgba(30,87,153,.4)}
+.s-avg{background:rgba(217,119,6,.15);color:var(--amber2);border-color:rgba(217,119,6,.3)}
+.s-blw{background:rgba(185,28,28,.15);color:var(--red2);border-color:rgba(185,28,28,.3)}
+.s-crt{background:rgba(185,28,28,.25);color:#fca5a5;border-color:rgba(185,28,28,.5)}
+
+/* ══ DOMAIN CARDS ══ */
+.dom-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dom-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.dom-card h4{color:#fff;font-size:.85rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.dom-schools{display:grid;gap:5px;margin-top:6px}
+.ds-row{display:grid;grid-template-columns:1fr 48px 52px;gap:5px;align-items:center;font-size:.75rem}
+.ds-name{color:var(--ink);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ds-bar-t{height:5px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.ds-bar-f{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--s3),var(--b3))}
+.ds-pct{font-weight:900;color:var(--s4);font-size:.75rem;text-align:left}
+
+/* ══ HEATMAP ══ */
+.hm-wrap{overflow-x:auto}
+.hm-tbl{border-collapse:collapse;font-size:.68rem;min-width:900px}
+.hm-tbl th{background:rgba(255,255,255,.06);color:var(--ink2);padding:7px 5px;border:1px solid rgba(255,255,255,.05);font-weight:800;text-align:center;white-space:nowrap}
+.hm-tbl td{border:1px solid rgba(255,255,255,.04);padding:4px;text-align:center}
+.hm-tbl tr:hover td{filter:brightness(1.12)}
+.hm-ind{text-align:right!important;font-weight:700;color:var(--ink);max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:7px!important}
+.hm-cell{width:29px;border-radius:4px;font-weight:800;cursor:pointer;transition:.12s}
+.hm-cell:hover{transform:scale(1.18);position:relative;z-index:1}
+.h0{background:rgba(185,28,28,.55);color:#fecaca}
+.h1{background:rgba(217,119,6,.4);color:#fde68a}
+.h2{background:rgba(161,130,0,.4);color:#fef08a}
+.h3{background:rgba(21,128,61,.45);color:#86efac}
+.h4{background:rgba(6,95,70,.5);color:#6ee7b7}
+.h5{background:rgba(30,87,153,.5);color:#93c5fd}
+.hm-dom-sep{background:rgba(255,255,255,.04)!important;font-weight:900;color:var(--ink);text-align:right!important}
+
+/* ══ SCHOOL CARDS ══ */
+.sch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.sch-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.sch-card:hover{border-color:var(--s4);transform:translateY(-2px);box-shadow:var(--shm)}
+.sch-card::before{content:"";position:absolute;top:0;right:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--s4),var(--b4));border-radius:0 var(--r) var(--r) 0}
+.sch-rank{position:absolute;top:10px;left:10px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--s3),var(--b3));color:#fff;font-size:.68rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.sch-lv{font-size:.67rem;font-weight:800;border-radius:999px;padding:2px 8px;display:inline-block;margin-bottom:5px}
+.lv-i{background:rgba(30,87,153,.25);color:#93c5fd}
+.lv-m{background:rgba(46,125,82,.25);color:#6ee7a0}
+.lv-h{background:rgba(139,0,139,.25);color:#e879f9}
+.sch-name{font-size:.95rem;font-weight:900;color:#fff;margin-bottom:9px}
+.prog-bar{height:7px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:3px}
+.prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--s3),var(--b3));transition:width .7s}
+.sch-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+.ss{text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:4px 2px}
+.ss b{display:block;font-size:.82rem;color:var(--s5);font-weight:900}
+.ss small{display:block;font-size:.58rem;color:var(--ink3);font-weight:700}
+
+/* ══ RECOMMENDATIONS ══ */
+.rec-grid{display:grid;gap:9px}
+.rec-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px;display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:start}
+.rec-icon{font-size:1.5rem;line-height:1}
+.rec-title{font-weight:800;color:#fff;font-size:.88rem;margin-bottom:3px}
+.rec-body{color:var(--ink2);font-size:.79rem;line-height:1.6}
+.pri-badge{font-size:.67rem;font-weight:900;border-radius:999px;padding:3px 9px;white-space:nowrap;border:1px solid}
+.p-h{background:rgba(185,28,28,.15);color:var(--red2);border-color:rgba(185,28,28,.3)}
+.p-m{background:rgba(217,119,6,.12);color:var(--amber2);border-color:rgba(217,119,6,.25)}
+.p-l{background:rgba(46,125,82,.15);color:var(--s4);border-color:rgba(46,125,82,.3)}
+
+/* ══ TOOLBAR ══ */
+.toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tbx{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--ink);border-radius:8px;padding:7px 11px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s;appearance:none;-webkit-appearance:none}
+.tbx:hover{background:rgba(255,255,255,.1)}
+.tbx.on{background:rgba(78,160,120,.15);border-color:rgba(78,160,120,.35);color:var(--s4)}
+select.tbx{padding-left:20px}
+.search-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:8px;padding:7px 11px;font-size:.78rem;font-family:inherit;min-width:190px}
+.search-box::placeholder{color:rgba(255,255,255,.3)}
+.search-box:focus{outline:none;border-color:var(--s4)}
+
+/* ══ INSIGHTS ══ */
+.insight{background:rgba(78,160,120,.07);border:1px solid rgba(78,160,120,.2);border-right:3px solid var(--s4);border-radius:10px;padding:10px 13px;margin-top:9px;color:var(--ink);font-size:.83rem;font-weight:700;line-height:1.6}
+.w-insight{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.2);border-right:3px solid var(--amber);border-radius:10px;padding:10px 13px;margin-top:9px;color:var(--ink);font-size:.83rem;font-weight:700;line-height:1.6}
+
+/* ══ DETAIL OVERLAY ══ */
+.det-ov{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}
+.det-ov.open{display:flex}
+.det-panel{background:var(--bg3);border:1px solid rgba(78,160,120,.2);border-radius:18px;padding:22px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.6);position:relative}
+.det-panel h3{color:#fff;font-weight:900;margin-bottom:12px}
+.det-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:.83rem}
+.det-row:last-child{border:none}
+.det-lbl{color:var(--ink3);font-weight:700}
+.det-val{color:var(--ink);font-weight:800}
+.close-btn{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--ink);border-radius:50%;width:30px;height:30px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.close-btn:hover{background:rgba(255,255,255,.14)}
+
+/* ══ TOOLTIP ══ */
+.tip{position:fixed;z-index:200;background:rgba(15,25,35,.97);border:1px solid rgba(78,160,120,.3);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:.77rem;max-width:220px;pointer-events:none;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+
+/* ══════════════════════════════════════════
+   DATA ENTRY PAGE
+══════════════════════════════════════════ */
+.de-layout{display:grid;grid-template-columns:260px 1fr;gap:14px;min-height:600px}
+.de-sidebar{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;max-height:70vh}
+.de-sidebar h4{color:var(--s5);font-weight:900;font-size:.8rem;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sch-pick{padding:8px 10px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:700;color:var(--ink2);transition:.15s;border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:space-between;gap:6px;font-family:inherit;width:100%}
+.sch-pick:hover{background:rgba(78,160,120,.08);color:var(--s5)}
+.sch-pick.active{background:rgba(78,160,120,.15);border-color:rgba(78,160,120,.3);color:#fff;font-weight:900}
+.sch-pick .lv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sch-pick .sp-pct{font-size:.68rem;color:var(--ink3);margin-right:auto}
+
+.de-main{display:flex;flex-direction:column;gap:12px}
+.de-school-header{background:linear-gradient(135deg,rgba(46,125,82,.15),rgba(30,87,153,.1));border:1px solid rgba(78,160,120,.2);border-radius:var(--r);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.de-school-info h3{color:#fff;font-weight:900;font-size:1.05rem}
+.de-school-info p{color:var(--ink2);font-size:.78rem;margin-top:3px}
+.de-score-big{text-align:center}
+.de-score-big span{font-size:2.5rem;font-weight:900;color:var(--s4);display:block}
+.de-score-big small{font-size:.72rem;color:var(--ink3);font-weight:700}
+
+/* Domain tabs inside data entry */
+.dom-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.dom-tab{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--ink2);border-radius:8px;padding:6px 12px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.dom-tab:hover{background:rgba(78,160,120,.1);color:var(--s5)}
+.dom-tab.active{background:rgba(78,160,120,.18);border-color:rgba(78,160,120,.4);color:#fff;font-weight:900}
+
+/* Indicator input card */
+.ind-entry-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:9px;transition:.15s}
+.ind-entry-card:hover{border-color:rgba(78,160,120,.25)}
+.ind-entry-head{padding:11px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;cursor:pointer;background:rgba(255,255,255,.02)}
+.ind-code{background:linear-gradient(135deg,var(--s2),var(--b2));color:#fff;border-radius:7px;padding:4px 9px;font-size:.72rem;font-weight:900;direction:ltr;white-space:nowrap}
+.ind-text{font-size:.85rem;font-weight:700;color:#fff}
+.ind-meta{font-size:.7rem;color:var(--ink3);margin-top:1px}
+.ind-progress-mini{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.ipm-bar{width:60px;height:6px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.ipm-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--s3),var(--b3));transition:width .4s}
+.ipm-pct{font-size:.75rem;font-weight:900;color:var(--s4);min-width:30px;text-align:left}
+.ind-entry-body{display:none;padding:13px 14px;border-top:1px solid var(--line);background:rgba(255,255,255,.01)}
+.ind-entry-card.open .ind-entry-body{display:block}
+.ind-entry-card.open .ind-entry-head{background:rgba(78,160,120,.06)}
+
+/* Requirement row */
+.req-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;margin:4px 0;font-size:.8rem;color:var(--ink);background:rgba(255,255,255,.02);transition:.12s}
+.req-row:hover{background:rgba(78,160,120,.06)}
+.req-row input[type=checkbox]{accent-color:var(--s4);width:15px;height:15px;flex-shrink:0}
+.req-row.checked{background:rgba(46,125,82,.08);border-color:rgba(46,125,82,.25);color:var(--s5)}
+
+/* Score slider */
+.score-row{display:flex;align-items:center;gap:10px;margin:10px 0}
+.score-label{font-size:.78rem;font-weight:800;color:var(--ink2);min-width:90px}
+.score-slider{flex:1;accent-color:var(--s4);height:4px}
+.score-val{font-size:.85rem;font-weight:900;color:var(--s4);min-width:36px;text-align:left}
+.score-btns{display:flex;gap:5px}
+.s-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-size:.8rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;display:flex;align-items:center;justify-content:center}
+.s-btn:hover{background:rgba(78,160,120,.15);border-color:var(--s4);color:var(--s4)}
+.s-btn.active{background:rgba(78,160,120,.2);border-color:var(--s4);color:var(--s4)}
+
+/* Notes textarea */
+.notes-area{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:9px;font-family:inherit;font-size:.8rem;resize:vertical;min-height:64px;margin-top:6px}
+.notes-area:focus{outline:none;border-color:var(--s4)}
+
+/* Save button */
+.save-btn{background:linear-gradient(135deg,var(--s3),var(--b3));border:0;color:#fff;border-radius:9px;padding:8px 18px;font-size:.82rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.2s}
+.save-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.save-btn:active{transform:translateY(0)}
+.saved-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(46,125,82,.15);border:1px solid rgba(46,125,82,.3);color:var(--s4);border-radius:999px;padding:4px 10px;font-size:.72rem;font-weight:800}
+
+/* Summary bar in de-main header */
+.dom-sum-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.dsb-item{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:9px;padding:8px 10px;text-align:center}
+.dsb-val{font-size:1.2rem;font-weight:900;color:var(--s5);display:block}
+.dsb-lbl{font-size:.65rem;color:var(--ink3);font-weight:700}
+
+/* ══ BASELINE (إضافة جديدة مع الحفاظ على التصميم) ══ */
+.baseline-card{background:rgba(30,87,153,.08);border-right:3px solid #4a90d9}
+.baseline-input-group{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:15px}
+.baseline-input-group label{min-width:140px;font-weight:800;color:var(--s5)}
+.baseline-input-group input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:9px 12px;width:140px;font-family:inherit;font-weight:700}
+.bl-save-btn{background:linear-gradient(135deg,#1e5799,#2e7d52);border:none;border-radius:9px;padding:6px 16px;font-weight:900;cursor:pointer;color:#fff;font-family:inherit}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.comp-item{background:var(--card2);border-radius:12px;padding:12px;border:1px solid var(--line)}
+.delta-up{color:#86efac;font-weight:900}
+.delta-down{color:#fca5a5;font-weight:900}
+.perf-exc{color:#86efac}.perf-gd{color:#93c5fd}.perf-avg{color:#fde68a}.perf-init{color:#fca5a5}
+
+/* ══ PRINT ══ */
+@media print{.topbar,.vnav,.toolbar,.tbtn,.tbx,.save-btn{display:none!important}body{background:#fff}main{padding:0}.card{box-shadow:none;border:1px solid #ddd}}
+@media(max-width:900px){.shell{flex-direction:column}.vnav{width:100%;height:auto;position:relative;top:0;flex-direction:row;overflow-x:auto;padding:6px}.vtab{width:auto;min-width:auto;padding:8px 10px}.hero-band{grid-template-columns:1fr}.kpi-strip{grid-template-columns:repeat(3,1fr)}.charts-grid,.dom-grid{grid-template-columns:1fr}.lb-row{grid-template-columns:30px 1fr 55px}.lb-bar-wrap{display:none}.sum-ribbon{grid-template-columns:repeat(2,1fr)}.de-layout{grid-template-columns:1fr}.de-sidebar{max-height:200px;flex-direction:row;flex-wrap:wrap;overflow-x:auto}}
+
+/* ═══════ AUTH SYSTEM (محاكاة مبسطة للعمل) ═══════ */
+#authOverlay{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#0a1f1a 0%,#0d2f1e 40%,#0d2137 100%);display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif}
+.auth-box{background:rgba(255,255,255,.05);backdrop-filter:blur(24px);border:1px solid rgba(78,160,120,.2);border-radius:24px;padding:38px 34px;width:400px;max-width:92vw;color:#fff;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.auth-logo{font-size:3rem;margin-bottom:6px}
+.auth-title{font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:3px}
+.auth-sub{font-size:.8rem;color:var(--s5,#a8d5b5);margin-bottom:24px;font-weight:600}
+.role-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:22px}
+.role-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:13px 7px;cursor:pointer;color:#fff;transition:.2s;font-family:'Tajawal',sans-serif}
+.role-btn:hover{background:rgba(78,160,120,.12);border-color:rgba(78,160,120,.3);transform:translateY(-2px)}
+.role-btn.sel{border-color:#4caf7d;background:rgba(78,160,120,.18);box-shadow:0 0 0 3px rgba(78,160,120,.18)}
+.role-btn .ri{font-size:1.7rem;display:block;margin-bottom:5px}
+.role-btn .rn{font-size:.75rem;font-weight:900;display:block}
+.role-btn .rd{font-size:.65rem;color:rgba(255,255,255,.5);display:block;margin-top:2px}
+.pin-wrap{margin-bottom:18px}
+.pin-lbl{font-size:.78rem;color:var(--s5,#a8d5b5);font-weight:700;margin-bottom:7px;display:block}
+.pin-inp{width:100%;text-align:center;font-size:1.7rem;letter-spacing:.6rem;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;border-radius:12px;padding:11px;font-family:'Tajawal',sans-serif;transition:.2s}
+.pin-inp:focus{outline:none;border-color:#4caf7d;background:rgba(78,160,120,.1)}
+.auth-go{width:100%;background:linear-gradient(135deg,#2e7d52,#1e5799);border:0;border-radius:12px;padding:13px;color:#fff;font-size:.95rem;font-weight:900;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s;box-shadow:0 8px 24px rgba(46,125,82,.3)}
+.auth-go:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.auth-err{background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.4);border-radius:9px;padding:9px;margin-top:10px;color:#fca5a5;font-size:.82rem;font-weight:700;display:none}
+.auth-hint{margin-top:14px;font-size:.68rem;color:rgba(255,255,255,.25)}
+.role-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 11px;font-size:.72rem;font-weight:900;border:1px solid}
+.rb-de{background:rgba(78,160,120,.15);color:#6ee7a0;border-color:rgba(78,160,120,.3)}
+.rb-pr{background:rgba(74,144,217,.15);color:#93c5fd;border-color:rgba(74,144,217,.3)}
+.rb-sv{background:rgba(244,196,48,.12);color:#fde68a;border-color:rgba(244,196,48,.25)}
+.logout-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-radius:999px;padding:4px 11px;font-size:.72rem;font-weight:800;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
+.logout-btn:hover{background:rgba(255,255,255,.14)}
+</style>
+</head>
+<body>
+
+<div id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">🏫</div>
+    <div class="auth-title">لوحة إشراف التقويم المدرسي</div>
+    <div class="auth-sub">إعداد: الأستاذ الحسين شويع</div>
+    <div class="role-grid">
+      <button class="role-btn" onclick="Auth.pick('data_entry',this)"><span class="ri">📝</span><span class="rn">مدخل البيانات</span><span class="rd">إضافة وحفظ</span></button>
+      <button class="role-btn" onclick="Auth.pick('principal',this)"><span class="ri">🏫</span><span class="rn">مدير المدرسة</span><span class="rd">تعديل واعتماد</span></button>
+      <button class="role-btn" onclick="Auth.pick('supervisor',this)"><span class="ri">👑</span><span class="rn">مشرف التقويم</span><span class="rd">صلاحيات كاملة</span></button>
+    </div>
+    <div class="pin-wrap"><span class="pin-lbl">🔐 رمز الدخول (PIN)</span><input class="pin-inp" id="pinInp" type="password" maxlength="4" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter')Auth.login()"></div>
+    <button class="auth-go" onclick="Auth.login()">دخول ←</button>
+    <div class="auth-err" id="authErr">❌ رمز الدخول غير صحيح</div>
+    <div class="auth-hint">الرموز الافتراضية: مشرف 9999 · مدير 1234 · مدخل 0000</div>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+<div class="det-ov" id="detOv"><div class="det-panel"><button class="close-btn" onclick="closeDet()">✕</button><div id="detContent"></div></div></div>
+
+<header class="topbar">
+  <div class="brand"><div class="brand-icon">🎓</div><div><h1>لوحة إشراف التقويم المدرسي <span style="font-weight:500;font-size:.75em;opacity:.75">| إعداد ومتابعة المشرف: الأستاذ الحسين شويع</span></h1><p>مدارس محافظة بيش <span class="live-dot"></span></p></div></div>
+  <div class="top-actions"><button class="tbtn" onclick="D.refresh()">🔄 تحديث</button><button class="tbtn" onclick="D.exportCSV()">📥 CSV</button><button class="tbtn" onclick="window.print()">🖨️ طباعة</button><span id="savedStatus"></span><span id="roleBadge" style="display:none"></span><button class="logout-btn" id="logoutBtn" style="display:none" onclick="Auth.logout()">خروج ↩</button></div>
+</header>
+
+<div class="shell">
+  <nav class="vnav" id="vnav">
+    <div class="vnav-section">التحليل</div>
+    <button class="vtab active" onclick="showPage('overview',this)"><span class="vt-icon">🏠</span>نظرة عامة<span class="vt-badge">17</span></button>
+    <button class="vtab" onclick="showPage('leaderboard',this)"><span class="vt-icon">🏆</span>الترتيب والمقارنة</button>
+    <button class="vtab" onclick="showPage('domains',this)"><span class="vt-icon">📐</span>تحليل المجالات</button>
+    <button class="vtab" onclick="showPage('heatmap',this)"><span class="vt-icon">🔥</span>الخريطة الحرارية</button>
+    <button class="vtab" onclick="showPage('schools',this)"><span class="vt-icon">🏫</span>بطاقات المدارس</button>
+    <div class="vnav-divider"></div>
+    <div class="vnav-section">الإدخال والتقويم</div>
+    <button class="vtab" onclick="showPage('dataentry',this)" id="deTab"><span class="vt-icon">✏️</span>إدخال وتحديث البيانات<span class="vt-badge" id="deChanges">0</span></button>
+    <button class="vtab" onclick="showPage('baseline',this)" id="blTab"><span class="vt-icon">📋</span>خط الأساس (التقويم الخارجي)<span class="vt-badge">مرجعي</span></button>
+    <div class="vnav-divider"></div>
+    <div class="vnav-section">الخطط</div>
+    <button class="vtab" onclick="showPage('recommendations',this)"><span class="vt-icon">💡</span>التوصيات والخطط</button>
+    <div id="navUM" style="display:none"><div class="vnav-divider"></div><div class="vnav-section">الإدارة</div><button class="vtab" onclick="showPage('usermgmt',this)"><span class="vt-icon">👑</span>إدارة المستخدمين</button></div>
+  </nav>
+
+  <div class="content" id="content">
+    <!-- ══ OVERVIEW ══ -->
+    <div id="page-overview" class="page active">
+      <div class="hero-band"><div class="hero-title"><h2>لوحة مؤشرات التقويم الشامل</h2><p>متابعة ١٧ مدرسة عبر ٢٣ مؤشراً ضمن ٤ مجالات</p><div class="meta-row"><span class="meta-chip">📅 الفصل الثاني ١٤٤٦هـ</span><span class="meta-chip">🏫 ٩ ابتدائي · ٤ متوسط · ٤ ثانوي</span><span class="meta-chip">🎯 ٢٣ مؤشر · ٤ مجالات</span></div></div><div class="kpi-strip" id="heroKpis"></div></div>
+      <div class="sum-ribbon" id="sumRibbon"></div>
+      <div class="charts-grid"><div class="chart-card"><h3>📊 معدل الإنجاز لكل مدرسة</h3><div class="ch-wrap-tall"><canvas id="cBars"></canvas></div></div><div class="chart-card"><h3>🎯 توزيع المدارس حسب مستوى الأداء</h3><div class="ch-wrap"><canvas id="cDist"></canvas></div><div id="distIns" class="insight" style="margin-top:9px"></div></div></div>
+      <div class="charts-grid"><div class="chart-card"><h3>📐 متوسط المجالات الأربعة</h3><div class="ch-wrap"><canvas id="cDomAvg"></canvas></div></div><div class="chart-card"><h3>📈 تطور الإنجاز التراكمي</h3><div class="ch-wrap"><canvas id="cTrend"></canvas></div></div></div>
+      <div class="card"><h3>⚡ التنبيهات الفورية</h3><div id="alertsP"></div></div>
+    </div>
+
+    <!-- ══ LEADERBOARD ══ -->
+    <div id="page-leaderboard" class="page"><div class="sec-hd"><h2>🏆 ترتيب المدارس</h2><span class="badge bd-a">لحظي</span></div><div class="toolbar"><select class="tbx" id="lbDom" onchange="D.renderLB()"><option value="all">جميع المجالات</option><option value="الإدارة المدرسية">الإدارة المدرسية</option><option value="التعليم والتعلم">التعليم والتعلم</option><option value="نواتج التعلم">نواتج التعلم</option><option value="البيئة المدرسية">البيئة المدرسية</option></select><select class="tbx" id="lbLev" onchange="D.renderLB()"><option value="all">كل المراحل</option><option value="ابتدائية">ابتدائي</option><option value="متوسطة">متوسط</option><option value="ثانوية">ثانوي</option></select><button class="tbx" onclick="D.toggleSort()">↕ عكس</button></div><div class="lb" id="lbList"></div></div>
+
+    <!-- ══ DOMAINS ══ -->
+    <div id="page-domains" class="page"><div class="sec-hd"><h2>📐 تحليل المجالات الأربعة</h2><span class="badge bd-g">٤ مجالات</span></div><div class="dom-grid" id="domCards"></div><div class="charts-grid" style="margin-top:12px"><div class="chart-card"><h3>🕸 مقارنة — الأعلى والأدنى والمتوسط</h3><div class="ch-wrap-tall"><canvas id="cRadar"></canvas></div></div><div class="chart-card"><h3>📊 توزيع درجات المجالات مكدّس</h3><div class="ch-wrap-tall"><canvas id="cStack"></canvas></div></div></div></div>
+
+    <!-- ══ HEATMAP ══ -->
+    <div id="page-heatmap" class="page"><div class="sec-hd"><h2>🔥 خريطة حرارة المؤشرات × المدارس</h2><span class="badge bd-r">٢٣ × ١٧</span></div><div class="toolbar"><select class="tbx" id="hmDom" onchange="D.renderHM()"><option value="all">جميع المجالات</option><option value="الإدارة المدرسية">الإدارة المدرسية</option><option value="التعليم والتعلم">التعليم والتعلم</option><option value="نواتج التعلم">نواتج التعلم</option><option value="البيئة المدرسية">البيئة المدرسية</option></select><button class="tbx" onclick="D.exportCSV()">📥 تصدير CSV</button></div><div class="card" style="padding:10px"><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"><span style="font-size:.7rem;color:var(--ink3);font-weight:800">مفتاح:</span><span class="h0" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">&lt;٥٠</span><span class="h1" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">٥٠٪</span><span class="h2" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">٦٠٪</span><span class="h3" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">٧٠٪</span><span class="h4" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">٨٠٪</span><span class="h5" style="border-radius:5px;padding:1px 7px;font-size:.68rem;font-weight:800">٩٠٪+</span></div><div class="hm-wrap" id="hmWrap"></div></div><div class="insight" id="hmIns"></div></div>
+
+    <!-- ══ SCHOOLS ══ -->
+    <div id="page-schools" class="page"><div class="sec-hd"><h2>🏫 بطاقات المدارس التفصيلية</h2><span class="badge bd-b">١٧ مدرسة</span></div><div class="toolbar"><input class="search-box" id="schQ" placeholder="🔍 ابحث..." oninput="D.filterSch()"><select class="tbx" id="schLev" onchange="D.filterSch()"><option value="all">كل المراحل</option><option value="ابتدائية">ابتدائي</option><option value="متوسطة">متوسط</option><option value="ثانوية">ثانوي</option></select><select class="tbx" id="schSort" onchange="D.filterSch()"><option value="rank">الأداء</option><option value="name">الاسم</option><option value="level">المرحلة</option></select></div><div class="sch-grid" id="schGrid"></div></div>
+
+    <!-- ══ DATA ENTRY ══ -->
+    <div id="page-dataentry" class="page"><div class="sec-hd"><h2>✏️ إدخال وتحديث بيانات المؤشرات</h2><span class="badge bd-g" id="deBadge">اختر مدرسة</span></div><div class="de-layout"><div class="de-sidebar"><h4>🏫 اختر المدرسة</h4><div id="schPickerList"></div></div><div class="de-main" id="deMain"><div style="color:var(--ink3);text-align:center;padding:40px 20px;font-size:.9rem;font-weight:700">← اختر مدرسة من القائمة لبدء إدخال بيانات المؤشرات</div></div></div></div>
+
+    <!-- ══ BASELINE (جديد) ══ -->
+    <div id="page-baseline" class="page">
+      <div class="sec-hd"><h2>📋 خط الأساس — نتائج التقويم الخارجي (هيئة تقويم التعليم والتدريب)</h2><span class="badge bd-b">مرجع الاعتماد</span></div>
+      <div class="card" style="margin-bottom:16px"><p style="color:var(--ink2);font-size:.85rem;margin-bottom:12px">📌 هذا القسم مخصص لإدخال نتائج التقويم الخارجي الرسمي لكل مدرسة كخط أساس مرجعي. بعد الإدخال تظهر مقارنة تلقائية بين الأداء السابق (الخارجي) والحالي (المُدخل في اللوحة) في جميع المؤشرات والمجالات. مستويات الأداء: <strong style="color:#86efac">تميز ≥90%</strong> | <strong style="color:#93c5fd">تقدم 75-89%</strong> | <strong style="color:#fde68a">انطلاق 50-74%</strong> | <strong style="color:#fca5a5">تهيئة <50%</strong></p></div>
+      <div class="de-layout"><div class="de-sidebar"><h4>🏫 اختر المدرسة</h4><div id="blSchoolPicker"></div></div><div class="de-main" id="blMain"><div style="color:var(--ink3);text-align:center;padding:40px;font-weight:700">← اختر مدرسة من القائمة لعرض/تعديل خط الأساس المرجعي</div></div></div>
+    </div>
+
+    <!-- ══ RECOMMENDATIONS ══ -->
+    <div id="page-recommendations" class="page"><div class="sec-hd"><h2>💡 التوصيات التطويرية</h2><span class="badge bd-a">مقترح</span></div><div class="toolbar"><button class="tbx on" onclick="D.filterRec('all',this)">الكل</button><button class="tbx" onclick="D.filterRec('high',this)">🔴 عاجل</button><button class="tbx" onclick="D.filterRec('med',this)">🟡 متوسط</button><button class="tbx" onclick="D.filterRec('low',this)">🟢 متابعة</button></div><div class="rec-grid" id="recGrid"></div><div class="w-insight" style="margin-top:12px">📌 <b>تنويه:</b> البيانات الافتراضية محاكاة. البيانات المُدخلة يدوياً عبر تبويب الإدخال تحلّ محلها فوراً وتُحدّث جميع الرسوم البيانية.</div></div>
+
+    <!-- ══ USER MANAGEMENT (مبسط للصلاحيات) ══ -->
+    <div id="page-usermgmt" class="page"><div class="sec-hd"><h2>👑 إدارة المستخدمين والصلاحيات</h2><span class="badge bd-a">مشرف فقط</span></div><div class="card"><h3>🔐 تغيير رموز الدخول (PIN)</h3><div class="um-row"><div><label>📝 مدخل البيانات</label><small>إضافة وحفظ فقط — لا تعديل</small></div><input class="um-pin-in" type="password" maxlength="4" id="pinDE" placeholder="PIN جديد"><small class="um-status" id="stDE"></small><button class="um-save" onclick="Auth.changePin('data_entry','pinDE','stDE')">حفظ</button></div><div class="um-row"><div><label>🏫 مدير المدرسة</label><small>تعديل واعتماد المدخلات</small></div><input class="um-pin-in" type="password" maxlength="4" id="pinPR" placeholder="PIN جديد"><small class="um-status" id="stPR"></small><button class="um-save" onclick="Auth.changePin('principal','pinPR','stPR')">حفظ</button></div><div class="um-row"><div><label>👑 مشرف التقويم</label><small>صلاحيات غير محدودة</small></div><input class="um-pin-in" type="password" maxlength="4" id="pinSV" placeholder="PIN جديد"><small class="um-status" id="stSV"></small><button class="um-save" onclick="Auth.changePin('supervisor','pinSV','stSV')">حفظ</button></div></div><div class="card"><h3>📋 سجل الدخول الأخير</h3><div id="loginLog" style="color:var(--ink3);font-size:.83rem">لا توجد سجلات بعد.</div></div></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  STATIC DATA (نفس النسخة الأصلية)
+// ═══════════════════════════════════════════
+const AUTH_PINS_KEY = 'bish_sup_pins_v1';
+const AUTH_SESS_KEY = 'bish_sup_session_v1';
+const AUTH_LOG_KEY  = 'bish_sup_loginlog_v1';
+
+const Auth = {
+  role: null,
+  getPins() { try { const p = localStorage.getItem(AUTH_PINS_KEY); if (p) return JSON.parse(p); } catch(e) {} return { data_entry: '0000', principal: '1234', supervisor: '9999' }; },
+  savePins(pins) { localStorage.setItem(AUTH_PINS_KEY, JSON.stringify(pins)); },
+  pick(role, btn) { this.role = role; document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); document.getElementById('pinInp').focus(); },
+  login() { const pin = document.getElementById('pinInp').value; const err = document.getElementById('authErr'); if (!this.role) { err.style.display='block'; err.textContent='⚠️ اختر دوراً أولاً'; return; } if (this.getPins()[this.role] !== pin) { err.style.display='block'; err.textContent='❌ رمز الدخول غير صحيح'; document.getElementById('pinInp').value=''; return; } sessionStorage.setItem(AUTH_SESS_KEY, JSON.stringify({role:this.role, time:new Date().toISOString()})); this._log(this.role); this._apply(this.role); document.getElementById('authOverlay').style.display='none'; },
+  logout() { sessionStorage.removeItem(AUTH_SESS_KEY); location.reload(); },
+  _log(role) { const names={data_entry:'مدخل البيانات',principal:'مدير المدرسة',supervisor:'مشرف التقويم'}; try { const logs = JSON.parse(localStorage.getItem(AUTH_LOG_KEY)||'[]'); logs.unshift({role:names[role], time:new Date().toLocaleString('ar-SA')}); localStorage.setItem(AUTH_LOG_KEY, JSON.stringify(logs.slice(0,30))); } catch(e) {} },
+  _apply(role) { window.CURRENT_ROLE = role; const names={data_entry:'📝 مدخل البيانات',principal:'🏫 مدير المدرسة',supervisor:'👑 مشرف التقويم'}; const cls={data_entry:'rb-de',principal:'rb-pr',supervisor:'rb-sv'}; const badge = document.getElementById('roleBadge'); badge.textContent = names[role]; badge.className = 'role-badge ' + cls[role]; badge.style.display = 'inline-flex'; document.getElementById('logoutBtn').style.display = 'inline-flex'; if (role === 'supervisor') document.getElementById('navUM').style.display='block'; setTimeout(() => this._enforce(role), 200); },
+  _enforce(role) { if (role === 'supervisor') return; if (role === 'data_entry') { document.querySelectorAll('.tbtn').forEach(btn => { const t = btn.textContent||''; if (t.includes('تصدير')||t.includes('طباعة')) btn.style.display='none'; }); document.querySelectorAll('.vtab').forEach(b=>{ const t=b.textContent||''; if(t.includes('التوصيات')||t.includes('إدارة')) b.style.display='none'; }); } if (role === 'data_entry') { document.querySelectorAll('.tbx').forEach(btn=>{ if((btn.textContent||'').includes('CSV')) btn.style.display='none'; }); } },
+  can(action) { const role = window.CURRENT_ROLE || 'data_entry'; const map = { data_entry:{add:true, edit:false, export:false, manage:false}, principal:{add:true, edit:true, export:true, manage:false}, supervisor:{add:true, edit:true, export:true, manage:true} }; return map[role]?.[action] ?? false; },
+  changePin(role, inputId, statusId) { const v = (document.getElementById(inputId)?.value||'').trim(); const st = document.getElementById(statusId); if (!/^\d{4}$/.test(v)) { if(st){st.textContent='❌ 4 أرقام فقط';st.style.color='#f87171';} return; } const pins = this.getPins(); pins[role] = v; this.savePins(pins); document.getElementById(inputId).value=''; if(st){st.textContent='✅ تم';st.style.color='#6ee7a0';} setTimeout(()=>{if(st)st.textContent='';},2500); },
+  renderLog() { const el = document.getElementById('loginLog'); if(!el) return; try { const logs = JSON.parse(localStorage.getItem(AUTH_LOG_KEY)||'[]'); if (!logs.length) { el.textContent='لا توجد سجلات بعد.'; return; } el.innerHTML = logs.map(l=>`<div class="login-log-row">👤 <b>${l.role}</b> — ${l.time}</div>`).join(''); } catch(e) {} },
+  checkSession() { try { const s = sessionStorage.getItem(AUTH_SESS_KEY); if (s) { const {role} = JSON.parse(s); if(role){this.role=role;this._apply(role);document.getElementById('authOverlay').style.display='none';return true;} } } catch(e) {} return false; }
+};
+
+const SCHOOLS = [
+  {id:"s01",name:"ابتدائية أبو هريرة",level:"ابتدائية"},{id:"s02",name:"ابتدائية الزبير بن العوام",level:"ابتدائية"},{id:"s03",name:"ابتدائية الإمام مالك",level:"ابتدائية"},{id:"s04",name:"ابتدائية مسلية",level:"ابتدائية"},{id:"s05",name:"ابتدائية أم الدفين",level:"ابتدائية"},{id:"s06",name:"ابتدائية العبادلة",level:"ابتدائية"},{id:"s07",name:"متوسطة العبادلة",level:"متوسطة"},{id:"s08",name:"ابتدائية هارون الرشيد",level:"ابتدائية"},{id:"s09",name:"متوسطة هارون الرشيد",level:"متوسطة"},{id:"s10",name:"ابتدائية الحقو",level:"ابتدائية"},{id:"s11",name:"متوسطة الحقو",level:"متوسطة"},{id:"s12",name:"ثانوية الحقو",level:"ثانوية"},{id:"s13",name:"ابتدائية وادي عمود",level:"ابتدائية"},{id:"s14",name:"متوسطة وادي عمود",level:"متوسطة"},{id:"s15",name:"ثانوية وادي عمود",level:"ثانوية"},{id:"s16",name:"ثانوية آل مشحنة",level:"ثانوية"},{id:"s17",name:"ثانوية بيش الأولى",level:"ثانوية"}
+];
+const DOMAINS = ["الإدارة المدرسية","التعليم والتعلم","نواتج التعلم","البيئة المدرسية"];
+const DICONS = {"الإدارة المدرسية":"🏛","التعليم والتعلم":"📚","نواتج التعلم":"🎯","البيئة المدرسية":"🏗"};
+const INDS = [ /* تم تضمين المؤشرات كاملة من النسخة الأصلية - 23 مؤشر مع متطلباتها */ 
+  {uid:"IND-001",id:"1-1-1-1",text:"تضع المدرسة خطة تشغيلية شاملة وفق أهداف تطويرية محددة",domain:"الإدارة المدرسية",standard:"التخطيط",reqs:["لدى المدرسة خطة تشغيلية مكتملة العناصر","أهداف الخطة تطويرية واضحة وقابلة للقياس","مواءمة الأهداف مع نتائج التشخيص","البرامج والأنشطة تحقق الأهداف التطويرية","مؤشرات قياس أو أدلة نجاح لكل برنامج","خطة زمنية تفصيلية للتنفيذ","توزع الأدوار والمسؤوليات على منسوبي المدرسة"]},
+  {uid:"IND-002",id:"2-1-1-1",text:"تتابع المدرسة تنفيذ خطتها التشغيلية وتطورها",domain:"الإدارة المدرسية",standard:"التخطيط",reqs:["وجود آلية متابعة معتمدة","متابعة تنفيذ البرامج والأنشطة وفق الخطة الزمنية","تقويم تنفيذ الخطة بما يضمن تحقيق أهدافها","وجود مؤشرات أداء أو نسب إنجاز","توثيق تنفيذ الأنشطة والبرامج","اجتماعات لمتابعة أعمال الخطة","تطوير الخطة بما يضمن تحقيق أهدافها"]},
+  {uid:"IND-003",id:"2-1-1-2",text:"تعزز المدرسة القيم الإسلامية والهوية الوطنية",domain:"الإدارة المدرسية",standard:"قيادة العملية التعليمية",reqs:["وجود خطة برنامج لتعزيز القيم","مواءمة الأنشطة مع المناسبات والقيم","دمج القيم في الممارسات التعليمية","تدعيم الإذاعة المدرسية بمحتوى منتظم","تعزيز السلوك القيمي عبر أنظمة واضحة","وجود أنشطة طالبية نوعية تدعم القيم","تفعيل الأنشطة الوطنية والفعاليات"]},
+  {uid:"IND-004",id:"2-1-2-1",text:"تبني المدرسة علاقات إيجابية مع المجتمع والأسر",domain:"الإدارة المدرسية",standard:"المجتمع المدرسي",reqs:["تفعيل مجلس أولياء الأمور","التواصل المنتظم مع الأسر","الشراكات المجتمعية الفعّالة","إشراك المجتمع في الأنشطة","توثيق الزيارات والتواصل"]},
+  {uid:"IND-005",id:"3-1-2-1",text:"تطور المدرسة قدرات منسوبيها وترفع كفاءتهم",domain:"الإدارة المدرسية",standard:"التطوير المؤسسي",reqs:["رصد الاحتياجات التدريبية","تنفيذ البرامج التطويرية","متابعة أثر التدريب","توثيق ساعات التدريب","تطوير الممارسات التدريسية"]},
+  {uid:"IND-006",id:"3-1-2-2",text:"توظف المدرسة بياناتها ونتائج تقويمها في التطوير",domain:"الإدارة المدرسية",standard:"التطوير المؤسسي",reqs:["جمع وتحليل البيانات المدرسية","استثمار نتائج التقويم","وجود خطط تحسين مبنية على البيانات","متابعة أثر التحسين"]},
+  {uid:"IND-007",id:"4-1-1-1",text:"تضمن المدرسة حقوق الطلاب وتوفير بيئة آمنة",domain:"الإدارة المدرسية",standard:"حقوق المتعلم وحمايته",reqs:["توفير بيئة تعليمية آمنة","احترام كرامة الطلاب","تفعيل الإرشاد الطلابي","توثيق الحالات وآليات الدعم"]},
+  {uid:"IND-008",id:"4-1-1-2",text:"تطبق المدرسة سياسات الانضباط والسلوك",domain:"الإدارة المدرسية",standard:"حقوق المتعلم وحمايته",reqs:["وضوح لائحة الانضباط","تطبيق السياسات بشكل منصف","توثيق الحالات السلوكية","دعم الطلاب ذوي الاحتياجات"]},
+  {uid:"IND-009",id:"5-1-1-1",text:"يخطط المعلم لدروسه وفق أهداف تعليمية واضحة",domain:"التعليم والتعلم",standard:"بناء خبرات التعلم",reqs:["توافر خطط درسية مكتملة","ارتباط الأهداف بالمنهج","تنوع أساليب التدريس المخططة","مراعاة الفروق الفردية في التخطيط","التخطيط للتقويم التكويني"]},
+  {uid:"IND-010",id:"5-1-1-2",text:"يستخدم المعلم استراتيجيات تدريسية متنوعة وفعّالة",domain:"التعليم والتعلم",standard:"بناء خبرات التعلم",reqs:["تنوع استراتيجيات التدريس","التعلم النشط والمشاركة","إثارة التفكير العلوي","توظيف الأسئلة المفتوحة","ربط المحتوى بالواقع"]},
+  {uid:"IND-011",id:"5-1-2-1",text:"يوظف المعلم التقنية والموارد الرقمية",domain:"التعليم والتعلم",standard:"بناء خبرات التعلم",reqs:["استخدام الوسائل التقنية","توظيف المنصات الرقمية","تنوع مصادر التعلم","استخدام الفيديو والعروض التفاعلية"]},
+  {uid:"IND-012",id:"5-1-2-2",text:"يراعي المعلم الفروق الفردية ويصمم تجارب تعلم متمايزة",domain:"التعليم والتعلم",standard:"بناء خبرات التعلم",reqs:["تشخيص مستويات الطلاب","تصميم أنشطة متدرجة","دعم المتأخرين وتحدي المتقدمين","تنوع أدوات التقويم","توثيق حالات الدعم"]},
+  {uid:"IND-013",id:"6-1-1-1",text:"يقوم المعلم تعلم الطلاب باستمرار وموضوعية",domain:"التعليم والتعلم",standard:"تقويم التعلم",reqs:["التقويم التكويني المستمر","تنوع أدوات التقويم","توثيق نتائج التقويم","استخدام النتائج لتعديل التدريس"]},
+  {uid:"IND-014",id:"6-1-1-2",text:"يستخدم المعلم نتائج التقويم لتطوير ممارساته",domain:"التعليم والتعلم",standard:"تقويم التعلم",reqs:["تحليل نتائج التقويم","التغذية الراجعة البنّاءة","تعديل الخطط بناءً على النتائج","التدريس العلاجي"]},
+  {uid:"IND-015",id:"6-1-2-1",text:"يوفر المعلم تغذية راجعة بنّاءة ومنتظمة",domain:"التعليم والتعلم",standard:"تقويم التعلم",reqs:["تقديم تغذية راجعة فورية","وضوح معايير التقييم","تفعيل التقويم الذاتي للطلاب","توثيق ملاحظات التطوير"]},
+  {uid:"IND-016",id:"7-1-1-1",text:"يحقق الطلاب مستويات تحصيلية مرضية",domain:"نواتج التعلم",standard:"التحصيل التعليمي",reqs:["نتائج الاختبارات فوق المتوسط","تحسن مستمر في التحصيل","انخفاض نسب الرسوب","جاهزية الطلاب للمرحلة التالية"]},
+  {uid:"IND-017",id:"7-1-1-2",text:"يظهر الطلاب مهارات تفكير عليا",domain:"نواتج التعلم",standard:"التحصيل التعليمي",reqs:["قدرة على التحليل والنقد","حل المشكلات الإبداعي","الاستدلال والبرهان","توظيف المعرفة في سياقات جديدة"]},
+  {uid:"IND-018",id:"7-1-2-1",text:"يتطور الطلاب شخصياً واجتماعياً",domain:"نواتج التعلم",standard:"التطور الشخصي والصحي",reqs:["الانتماء والمواطنة","المهارات الاجتماعية","الثقة بالنفس","الاستقلالية والمسؤولية"]},
+  {uid:"IND-019",id:"7-1-2-2",text:"يشارك الطلاب في الأنشطة المدرسية",domain:"نواتج التعلم",standard:"التطور الشخصي والصحي",reqs:["المشاركة في الأنشطة الطلابية","المبادرة والقيادة","التعاون وروح الفريق","الإنتاج الإبداعي"]},
+  {uid:"IND-020",id:"8-1-1-1",text:"يتمتع الطلاب بصحة ولياقة مناسبة",domain:"نواتج التعلم",standard:"التطور الشخصي والصحي",reqs:["انتظام الطلاب والتواجد","برامج الصحة المدرسية","النشاط البدني","الوعي الصحي"]},
+  {uid:"IND-021",id:"9-1-1-1",text:"يوفر المبنى بيئة آمنة ومحفزة للتعلم",domain:"البيئة المدرسية",standard:"المبنى المدرسي",reqs:["صيانة مستمرة للمبنى","كفاية الفصول والمرافق","جمالية البيئة التعليمية","التهوية والإضاءة المناسبة","توافر المختبرات والملاعب"]},
+  {uid:"IND-022",id:"9-1-1-2",text:"تصان مرافق المدرسة وتحافظ على نظافتها",domain:"البيئة المدرسية",standard:"المبنى المدرسي",reqs:["نظافة الفصول والممرات","صيانة دورات المياه","المحافظة على الأجهزة","برنامج صيانة دورية"]},
+  {uid:"IND-023",id:"9-1-2-1",text:"تطبق المدرسة إجراءات الأمن والسلامة",domain:"البيئة المدرسية",standard:"الأمن والسلامة",reqs:["وجود خطة طوارئ","تدريب المنسوبين على السلامة","توافر مخارج الطوارئ","سجلات الحوادث والمتابعة","بوابة الأمن المدرسي"]}
+];
+
+// ═══════════════════════════════════════════
+//  SCORES SYSTEM — محاكاة + بيانات مستخدم
+// ═══════════════════════════════════════════
+function sr(s){let x=Math.sin(s+1)*10000;return x-Math.floor(x);}
+const BASE_SCORES={};
+const BASE=[82,74,88,71,79,85,77,68,83,90,72,86,75,80,69,84,78];
+SCHOOLS.forEach((sc,si)=>{ BASE_SCORES[sc.id]={}; const base=BASE[si]||75; INDS.forEach((ind,ii)=>{ const db={"الإدارة المدرسية":si%3===0?5:si%3===1?-3:2,"التعليم والتعلم":si%4===0?4:si%4===1?-5:3,"نواتج التعلم":si%5===0?-2:si%5===2?6:1,"البيئة المدرسية":si%3===2?-4:si%3===0?3:-1}[ind.domain]||0; const noise=(sr(si*100+ii)-.5)*24; BASE_SCORES[sc.id][ind.uid]=Math.min(100,Math.max(0,Math.round(base+db+noise))); }); });
+const STORE_KEY='bish_supervisor_data_v1';
+let userData={};
+try{const s=localStorage.getItem(STORE_KEY);if(s)userData=JSON.parse(s);}catch(e){}
+function saveUserData(){try{localStorage.setItem(STORE_KEY,JSON.stringify(userData));}catch(e){}}
+function getScore(sid,uid){ return (userData[sid]&&userData[sid][uid]!==undefined)?userData[sid][uid]:BASE_SCORES[sid][uid]; }
+function setScore(sid,uid,val){ if(!userData[sid])userData[sid]={}; userData[sid][uid]=Math.min(100,Math.max(0,Math.round(val))); saveUserData(); }
+function getReqCheck(sid,uid,ri){ const key=`req_${sid}_${uid}_${ri}`; return userData[key]||false; }
+function setReqCheck(sid,uid,ri,val){ const key=`req_${sid}_${uid}_${ri}`; userData[key]=val; const ind=INDS.find(i=>i.uid===uid); if(ind){ const checks=ind.reqs.map((_,i2)=>userData[`req_${sid}_${uid}_${i2}`]||false); const pct=Math.round(checks.filter(Boolean).length/checks.length*100); setScore(sid,uid,pct); } saveUserData(); }
+function getNotes(sid,uid){ return (userData[`notes_${sid}_${uid}`])||''; }
+function setNotes(sid,uid,val){ userData[`notes_${sid}_${uid}`]=val; saveUserData(); }
+function sOv(sid){ const v=INDS.map(i=>getScore(sid,i.uid)); return Math.round(v.reduce((a,b)=>a+b,0)/v.length); }
+function sDom(sid,d){ const ii=INDS.filter(i=>i.domain===d); const v=ii.map(i=>getScore(sid,i.uid)); return Math.round(v.reduce((a,b)=>a+b,0)/v.length); }
+function dAvg(d){ return Math.round(SCHOOLS.reduce((s,sc)=>s+sDom(sc.id,d),0)/SCHOOLS.length); }
+function totAvg(){ return Math.round(SCHOOLS.reduce((s,sc)=>s+sOv(sc.id),0)/SCHOOLS.length); }
+function stLabel(p){ if(p>=90)return['متميز','s-exc']; if(p>=80)return['جيد جداً','s-gd']; if(p>=70)return['جيد','s-avg']; if(p>=60)return['مقبول','s-blw']; return['دون المستوى','s-crt']; }
+function hc(p){ if(p>=90)return 'h5'; if(p>=80)return 'h4'; if(p>=70)return 'h3'; if(p>=60)return 'h2'; if(p>=50)return 'h1'; return 'h0'; }
+function sn(sc){ return sc.name.replace(/ابتدائية |متوسطة |ثانوية /,''); }
+function lvClass(lv){ return lv==='ابتدائية'?'lv-i':lv==='متوسطة'?'lv-m':'lv-h'; }
+
+let lbAsc=false, recF='all', _recs=[], deSchool=null, deDomain=DOMAINS[0], deChanges=0;
+
+// ═══════════════════════════════════════════
+//  BASELINE (إضافة جديدة)
+// ═══════════════════════════════════════════
+let baselineData = {};
+const BASELINE_STORE_KEY = 'bish_baseline_external_v1';
+function loadBaseline(){ try{ const b=localStorage.getItem(BASELINE_STORE_KEY); if(b) baselineData=JSON.parse(b); else baselineData={}; }catch(e){} }
+function saveBaseline(){ localStorage.setItem(BASELINE_STORE_KEY,JSON.stringify(baselineData)); }
+function getBaselineOverall(sid){ return baselineData[sid]?.overall ?? null; }
+function getBaselineDomain(sid,domain){ return baselineData[sid]?.domains?.[domain] ?? null; }
+function setBaseline(sid, overall, domainsObj){ if(!baselineData[sid]) baselineData[sid]={}; baselineData[sid].overall=Math.min(100,Math.max(0,Math.round(overall))); baselineData[sid].domains={}; DOMAINS.forEach(d=>{ if(domainsObj[d]!==undefined) baselineData[sid].domains[d]=Math.min(100,Math.max(0,Math.round(domainsObj[d]))); }); saveBaseline(); }
+function initSampleBaseline(){ if(!baselineData["s10"]) setBaseline("s10", 73, {"الإدارة المدرسية":82,"التعليم والتعلم":70,"نواتج التعلم":72,"البيئة المدرسية":65}); }
+let currentBaselineSchool = null;
+function renderBaselineUI(){
+  const picker = document.getElementById('blSchoolPicker'); if(!picker) return;
+  picker.innerHTML = SCHOOLS.map(sc=>`<button class="sch-pick ${currentBaselineSchool?.id===sc.id?'active':''}" onclick="selectBaselineSchool('${sc.id}')"><span class="lv-dot" style="background:${getBaselineOverall(sc.id)!==null?'#4caf7d':'#888'}"></span><span>${sc.name}</span><span class="sp-pct">${getBaselineOverall(sc.id)!==null?getBaselineOverall(sc.id)+'%':'—'}</span></button>`).join('');
+  if(currentBaselineSchool){
+    const ov = getBaselineOverall(currentBaselineSchool.id) || '';
+    document.getElementById('blMain').innerHTML = `
+      <div class="de-school-header"><div class="de-school-info"><h3>${currentBaselineSchool.name}</h3><p>تحديث خط الأساس المرجعي حسب تقرير هيئة التقويم</p></div><div class="de-score-big"><span>${ov || '—'}</span><small>الدرجة المرجعية</small></div></div>
+      <div class="card"><h3>📊 المعدل العام للمدرسة (خط الأساس)</h3><div class="baseline-input-group"><label>النسبة المئوية (%)</label><input type="number" id="blOverall" min="0" max="100" step="1" value="${ov}"><button class="bl-save-btn" onclick="saveBaselineSchool()">💾 حفظ الأساس العام</button></div></div>
+      <div class="card"><h3>📐 مجالات التقويم الأربعة (النتائج المرجعية)</h3><div style="display:grid;gap:12px">${DOMAINS.map(d=>`<div class="baseline-input-group"><label>${DICONS[d]} ${d}</label><input type="number" id="bl_${d}" min="0" max="100" step="1" value="${getBaselineDomain(currentBaselineSchool.id,d)||''}"><button class="bl-save-btn" style="background:#2e7d52" onclick="saveBaselineDomain('${d}')">حفظ المجال</button></div>`).join('')}</div></div>
+      <div class="card"><h3>📈 مقارنة الأداء الحالي مع خط الأساس</h3><div id="comparePreview"></div></div>
+    `;
+    renderComparisonPreview();
+  } else { document.getElementById('blMain').innerHTML = '<div class="card" style="text-align:center;padding:40px">← اختر مدرسة من القائمة لعرض بيانات خط الأساس المرجعية</div>'; }
+}
+function selectBaselineSchool(sid){ currentBaselineSchool = SCHOOLS.find(s=>s.id===sid); renderBaselineUI(); }
+function saveBaselineSchool(){ const inp=document.getElementById('blOverall'); if(!inp||!currentBaselineSchool)return; const val=parseInt(inp.value); if(!isNaN(val)){ if(!baselineData[currentBaselineSchool.id])baselineData[currentBaselineSchool.id]={}; baselineData[currentBaselineSchool.id].overall=Math.min(100,Math.max(0,val)); if(!baselineData[currentBaselineSchool.id].domains) baselineData[currentBaselineSchool.id].domains={}; saveBaseline(); renderBaselineUI(); D.refreshAllCharts(); } }
+function saveBaselineDomain(domain){ const inp=document.getElementById(`bl_${domain}`); if(!inp||!currentBaselineSchool)return; const val=parseInt(inp.value); if(!isNaN(val)){ if(!baselineData[currentBaselineSchool.id])baselineData[currentBaselineSchool.id]={}; if(!baselineData[currentBaselineSchool.id].domains)baselineData[currentBaselineSchool.id].domains={}; baselineData[currentBaselineSchool.id].domains[domain]=Math.min(100,Math.max(0,val)); saveBaseline(); renderBaselineUI(); D.refreshAllCharts(); } }
+function renderComparisonPreview(){
+  if(!currentBaselineSchool) return;
+  const sid = currentBaselineSchool.id;
+  const currentOverall = sOv(sid);
+  const baseOverall = getBaselineOverall(sid);
+  const deltaOverall = baseOverall!==null ? currentOverall - baseOverall : null;
+  const classifyPerf = (p)=>{ if(p>=90) return {text:"تميز",class:"perf-exc"}; if(p>=75) return {text:"تقدم",class:"perf-gd"}; if(p>=50) return {text:"انطلاق",class:"perf-avg"}; return {text:"تهيئة",class:"perf-init"}; };
+  const curClass = classifyPerf(currentOverall);
+  const baseClass = baseOverall!==null ? classifyPerf(baseOverall) : null;
+  let html = `<div class="comp-item"><div class="comp-header"><strong>🏆 الإنجاز الكلي</strong></div><div>الحالي: <span class="${curClass.class}">${currentOverall}% (${curClass.text})</span></div>`;
+  if(baseOverall!==null){ html+=`<div>خط الأساس: <span class="${baseClass.class}">${baseOverall}% (${baseClass.text})</span></div><div class="progress-delta"><span class="${deltaOverall>0?'delta-up':deltaOverall<0?'delta-down':'delta-equal'}">${deltaOverall>0?'▲ +'+deltaOverall:deltaOverall<0?'▼ '+deltaOverall:'= 0'} نقطة مئوية</span></div>`; } else html+=`<div>خط الأساس: غير مدخل</div>`;
+  html+=`</div>`;
+  DOMAINS.forEach(d=>{
+    let cur = sDom(sid,d), base = getBaselineDomain(sid,d);
+    let curCl = classifyPerf(cur), baseCl = base!==null?classifyPerf(base):null;
+    let delta = base!==null ? cur - base : null;
+    html += `<div class="comp-item"><div class="comp-header"><strong>${DICONS[d]} ${d}</strong></div><div>الحالي: <span class="${curCl.class}">${cur}% (${curCl.text})</span></div>`;
+    if(base!==null){ html+=`<div>خط الأساس: <span class="${baseCl.class}">${base}% (${baseCl.text})</span></div><div class="progress-delta"><span class="${delta>0?'delta-up':delta<0?'delta-down':'delta-equal'}">${delta>0?'▲ +'+delta:delta<0?'▼ '+delta:'= 0'} نقطة</span></div>`; } else html+=`<div>خط الأساس: غير مدخل</div>`;
+    html+=`</div>`;
+  });
+  document.getElementById('comparePreview').innerHTML = `<div class="comp-grid">${html}</div>`;
+}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD OBJECT (جميع الوظائف الأصلية)
+// ═══════════════════════════════════════════
+const D = {
+  init(){ this.renderKpis(); this.renderRibbon(); this.renderBars(); this.renderDist(); this.renderDomAvg(); this.renderTrend(); this.renderAlerts(); this.renderLB(); this.renderDomCards(); this.renderRadar(); this.renderStack(); this.renderHM(); this.renderSchools(); this.buildRecs(); this.renderRec(); this.renderSidePicker(); loadBaseline(); initSampleBaseline(); renderBaselineUI(); },
+  refreshAllCharts(){ this.renderKpis(); this.renderRibbon(); this.renderBars(); this.renderDist(); this.renderDomAvg(); this.renderTrend(); this.renderAlerts(); this.renderLB(); this.renderDomCards(); this.renderRadar(); this.renderStack(); this.renderHM(); this.renderSchools(); this.buildRecs(); this.renderRec(); if(currentBaselineSchool) renderComparisonPreview(); },
+  renderKpis(){ const avg=totAvg(), top=Math.max(...SCHOOLS.map(s=>sOv(s.id))), bot=Math.min(...SCHOOLS.map(s=>sOv(s.id))); const a80=SCHOOLS.filter(s=>sOv(s.id)>=80).length,b70=SCHOOLS.filter(s=>sOv(s.id)<70).length; const tS=SCHOOLS.find(s=>sOv(s.id)===top); document.getElementById('heroKpis').innerHTML=`<div class="kpi"><span class="kpi-val">${avg}%</span><span class="kpi-label">متوسط الإنجاز</span><span class="kpi-sub">جميع المدارس</span></div><div class="kpi"><span class="kpi-val">${top}%</span><span class="kpi-label">أعلى مدرسة</span><span class="kpi-sub">${sn(tS)}</span></div><div class="kpi"><span class="kpi-val">${bot}%</span><span class="kpi-label">أدنى مدرسة</span><span class="kpi-sub">تحتاج دعماً</span></div><div class="kpi"><span class="kpi-val">${a80}</span><span class="kpi-label">مدرسة ≥٨٠٪</span><span class="kpi-sub">جيد فأعلى</span></div><div class="kpi"><span class="kpi-val">${b70}</span><span class="kpi-label">مدرسة &lt;٧٠٪</span><span class="kpi-sub">تحتاج تدخلاً</span></div>`; },
+  renderRibbon(){ document.getElementById('sumRibbon').innerHTML=DOMAINS.map(d=>{ const v=dAvg(d); const cls=v>=80?'':v>=70?'':'warn'; return`<div class="sum-tile ${cls}"><div class="sum-icon">${DICONS[d]}</div><div class="sum-val">${v}%</div><div class="sum-label">${DICONS[d]} ${d}</div></div>`; }).join(''); },
+  renderBars(){ const s=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)); const ctx=document.getElementById('cBars').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'bar',data:{labels:s.map(x=>sn(x)),datasets:[{data:s.map(x=>sOv(x.id)),backgroundColor:s.map(x=>{const v=sOv(x.id); return v>=85?'rgba(46,125,82,.8)':v>=75?'rgba(30,87,153,.8)':v>=65?'rgba(161,130,0,.75)':'rgba(185,28,28,.75)';}),borderRadius:7,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}%`}}},scales:{x:{min:0,max:100,grid:{color:'rgba(255,255,255,.04)'},ticks:{callback:v=>v+'%',font:{family:'Tajawal',weight:'bold'},color:'rgba(255,255,255,.5)'}},y:{grid:{display:false},ticks:{font:{family:'Tajawal',size:10,weight:'bold'},color:'rgba(255,255,255,.7)'}}}} }); },
+  renderDist(){ const b=[0,0,0,0,0]; SCHOOLS.forEach(s=>{const v=sOv(s.id); if(v>=90)b[0]++;else if(v>=80)b[1]++;else if(v>=70)b[2]++;else if(v>=60)b[3]++;else b[4]++;}); const ctx=document.getElementById('cDist').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'doughnut',data:{labels:['متميز ≥90','جيد جداً 80-89','جيد 70-79','مقبول 60-69','دون 60'],datasets:[{data:b,backgroundColor:['rgba(46,125,82,.85)','rgba(30,87,153,.85)','rgba(161,130,0,.8)','rgba(217,119,6,.8)','rgba(185,28,28,.8)'],borderWidth:2,borderColor:['#1a2d20']}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{font:{family:'Tajawal',size:10,weight:'bold'},color:'rgba(255,255,255,.7)',padding:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw} مدارس`}}}} }); const t80=SCHOOLS.filter(s=>sOv(s.id)>=80).length,t70=SCHOOLS.filter(s=>sOv(s.id)<70).length; document.getElementById('distIns').innerHTML=`✅ <b>${t80} مدارس (${Math.round(t80/17*100)}٪)</b> حققت مستوى جيد أو أعلى. ⚠️ <b>${t70} مدارس</b> بحاجة دعم إشرافي.`; },
+  renderDomAvg(){ const ctx=document.getElementById('cDomAvg').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'polarArea',data:{labels:DOMAINS,datasets:[{data:DOMAINS.map(d=>dAvg(d)),backgroundColor:['rgba(46,125,82,.65)','rgba(30,87,153,.65)','rgba(161,130,0,.65)','rgba(185,28,28,.6)'],borderColor:['#2e7d52','#1e5799','#a18200','#b91c1c'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Tajawal',size:11,weight:'bold'},color:'rgba(255,255,255,.7)'}}},scales:{r:{ticks:{backdropColor:'transparent',font:{family:'Tajawal'},color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.06)'}}}} }); },
+  renderTrend(){ const months=['شعبان','رمضان','شوال','ذو القعدة','ذو الحجة','محرم']; const bA=totAvg(); const mk=(off)=>months.map((_,i)=>Math.min(100,Math.max(45,Math.round(bA+off+(sr(i*17+off)-.4)*5+i*1.2)))); const ctx=document.getElementById('cTrend').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'متوسط الكل',data:mk(0),borderColor:'#4caf7d',backgroundColor:'rgba(78,160,120,.1)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#4caf7d',borderWidth:2.5},{label:'الإدارة',data:mk(3),borderColor:'#4a90d9',tension:.4,pointRadius:3,borderWidth:1.5,borderDash:[4,4]},{label:'التعليم',data:mk(-4),borderColor:'#fbbf24',tension:.4,pointRadius:3,borderWidth:1.5,borderDash:[4,4]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Tajawal',size:10,weight:'bold'},color:'rgba(255,255,255,.7)'}}},scales:{y:{min:50,max:100,ticks:{callback:v=>v+'%',font:{family:'Tajawal',weight:'bold'},color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.04)'}},x:{ticks:{font:{family:'Tajawal',weight:'bold'},color:'rgba(255,255,255,.5)'}}}} }); },
+  renderAlerts(){ const al=[]; SCHOOLS.forEach(sc=>{ const v=sOv(sc.id); if(v<65)al.push({t:'danger',msg:`<b>${sc.name}</b> — إنجاز كلي <b>${v}٪</b>. يوصى بزيارة إشرافية عاجلة.`}); DOMAINS.forEach(d=>{const dv=sDom(sc.id,d); if(dv<60)al.push({t:'warn',msg:`<b>${sc.name}</b> — مجال <b>${d}</b>: ${dv}٪. خطة تحسين مستهدفة.`});}); }); const top=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id))[0]; al.push({t:'success',msg:`🏆 <b>${top.name}</b> تصدّرت الترتيب بنسبة ${sOv(top.id)}٪.`}); al.sort((a,b)=>({danger:0,warn:1,success:2}[a.t]-{danger:0,warn:1,success:2}[b.t])); document.getElementById('alertsP').innerHTML=al.slice(0,8).map(a=>`<div style="display:flex;gap:9px;padding:8px 11px;border-radius:9px;margin-bottom:5px;background:${a.t==='danger'?'rgba(185,28,28,.12)':a.t==='warn'?'rgba(217,119,6,.1)':'rgba(46,125,82,.1)'};border-right:3px solid ${a.t==='danger'?'#b91c1c':a.t==='warn'?'#d97706':'#2e7d52'};font-size:.82rem;color:${a.t==='danger'?'#fca5a5':a.t==='warn'?'#fde68a':'#86efac'}">${a.msg}</div>`).join(''); },
+  renderLB(){ const dF=document.getElementById('lbDom').value,lF=document.getElementById('lbLev').value; let list=SCHOOLS.map(sc=>({...sc,score:dF==='all'?sOv(sc.id):sDom(sc.id,dF)})); if(lF!=='all')list=list.filter(s=>s.level===lF); list.sort((a,b)=>lbAsc?a.score-b.score:b.score-a.score); document.getElementById('lbList').innerHTML=list.map((sc,i)=>{ const [sl,sc2]=stLabel(sc.score), medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`, rc=i===0?'t1':i===1?'t2':i===2?'t3':''; const baseVal = dF==='all'?getBaselineOverall(sc.id):getBaselineDomain(sc.id,dF); const delta = baseVal!==null ? (sc.score - baseVal) : null; const deltaHtml = delta!==null ? `<span style="font-size:.65rem;margin-right:6px" class="${delta>0?'delta-up':delta<0?'delta-down':'delta-equal'}">${delta>0?'▲'+delta:delta<0?'▼'+delta:'='}</span>` : ''; return `<div class="lb-row ${rc}" onclick="D.showDet('${sc.id}')"><div class="lb-rank">${medal}</div><div class="lb-name">${sc.name}<small><span class="sch-lv ${lvClass(sc.level)}">${sc.level}</span> ${deltaHtml}</small></div><div class="lb-bar-wrap"><div class="lb-bar-t"><div class="lb-bar-f" style="width:${sc.score}%"></div></div><div class="lb-pct">${sc.score}٪</div></div><div class="lb-status"><span class="sp ${sc2}">${sl}</span></div></div>`; }).join(''); },
+  toggleSort(){ lbAsc=!lbAsc; this.renderLB(); },
+  renderDomCards(){ document.getElementById('domCards').innerHTML=DOMAINS.map(d=>{ const avg=dAvg(d); const rows=[...SCHOOLS].map(sc=>({sc,v:sDom(sc.id,d)})).sort((a,b)=>b.v-a.v); return `<div class="dom-card"><h4><span>${DICONS[d]}</span>${d}<span style="margin-right:auto;font-size:1.3rem;font-weight:900;color:var(--s4)">${avg}٪</span></h4><div class="dom-schools">${rows.map(({sc,v})=>{ const base=getBaselineDomain(sc.id,d); const delta=base!==null?v-base:null; const deltaSym=delta!==null?(delta>0?'🔼':delta<0?'🔽':'⚖️'):''; return `<div class="ds-row"><div class="ds-name" title="${sc.name}">${sn(sc)} ${deltaSym}</div><div class="ds-bar-t"><div class="ds-bar-f" style="width:${v}%"></div></div><div class="ds-pct">${v}٪</div></div>`; }).join('')}</div></div>`; }).join(''); },
+  renderRadar(){ const sorted=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)); const top=sorted[0],bot=sorted[sorted.length-1]; const ctx=document.getElementById('cRadar').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'radar',data:{labels:DOMAINS,datasets:[{label:sn(top),data:DOMAINS.map(d=>sDom(top.id,d)),borderColor:'#4caf7d',backgroundColor:'rgba(78,160,120,.12)',pointBackgroundColor:'#4caf7d',borderWidth:2.5},{label:sn(bot),data:DOMAINS.map(d=>sDom(bot.id,d)),borderColor:'#f87171',backgroundColor:'rgba(248,113,113,.08)',pointBackgroundColor:'#f87171',borderWidth:2,borderDash:[5,5]},{label:'متوسط الكل',data:DOMAINS.map(d=>dAvg(d)),borderColor:'#4a90d9',backgroundColor:'rgba(74,144,217,.06)',pointBackgroundColor:'#4a90d9',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Tajawal',size:10,weight:'bold'},color:'rgba(255,255,255,.7)'}}},scales:{r:{min:40,max:100,ticks:{backdropColor:'transparent',font:{family:'Tajawal',size:9},color:'rgba(255,255,255,.3)'},grid:{color:'rgba(255,255,255,.06)'},pointLabels:{font:{family:'Tajawal',size:11,weight:'bold'},color:'rgba(255,255,255,.8)'}}}} }); },
+  renderStack(){ const s=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)); const ctx=document.getElementById('cStack').getContext('2d'); if(Chart.getChart(ctx))Chart.getChart(ctx).destroy(); new Chart(ctx,{type:'bar',data:{labels:s.map(x=>sn(x)),datasets:DOMAINS.map((d,i)=>({label:d,data:s.map(x=>+(sDom(x.id,d)/4).toFixed(1)),backgroundColor:['rgba(46,125,82,.75)','rgba(30,87,153,.75)','rgba(161,130,0,.7)','rgba(185,28,28,.65)'][i],borderRadius:i===3?5:0,borderSkipped:false}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{family:'Tajawal',size:9,weight:'bold'},color:'rgba(255,255,255,.65)'}}},scales:{x:{stacked:true,ticks:{font:{family:'Tajawal',size:8,weight:'bold'},color:'rgba(255,255,255,.5)'}},y:{stacked:true,max:100,ticks:{font:{family:'Tajawal',weight:'bold'},color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.04)'}}}} }); },
+  renderHM(){ const dF=document.getElementById('hmDom').value; const inds=dF==='all'?INDS:INDS.filter(i=>i.domain===dF); let html=`<table class="hm-tbl"><thead><tr><th style="text-align:right;min-width:155px">المؤشر</th>${SCHOOLS.map(sc=>`<th title="${sc.name}" style="writing-mode:vertical-rl;transform:rotate(180deg);height:80px;font-size:.62rem;cursor:pointer" onclick="D.showDet('${sc.id}')">${sn(sc)}</th>`).join('')}<th>متوسط</th></tr></thead><tbody>`; let curD=null; inds.forEach(ind=>{ if(ind.domain!==curD){curD=ind.domain;html+=`<tr><td colspan="${SCHOOLS.length+2}" class="hm-dom-sep" style="padding:5px 8px">${DICONS[ind.domain]} ${ind.domain}</td></tr>`;} const vals=SCHOOLS.map(sc=>getScore(sc.id,ind.uid)); const avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length); html+=`<tr><td class="hm-ind" title="${ind.text}">${ind.id} — ${ind.text.slice(0,32)}${ind.text.length>32?'…':''}</td>${vals.map((v,si)=>`<td class="hm-cell ${hc(v)}" title="${SCHOOLS[si].name}: ${v}%" onclick="showCell('${SCHOOLS[si].id}','${ind.uid}',event)">${v}</td>`).join('')}<td class="hm-cell ${hc(avg)}" style="font-weight:900">${avg}</td></tr>`; }); html+='</tbody></table>'; document.getElementById('hmWrap').innerHTML=html; const weak=INDS.filter(ind=>Math.round(SCHOOLS.reduce((s,sc)=>s+getScore(sc.id,ind.uid),0)/SCHOOLS.length)<65); document.getElementById('hmIns').innerHTML=weak.length?`🔍 <b>أضعف المؤشرات:</b> ${weak.map(i=>`<b>${i.id}</b>`).join(' · ')}`:'✅ جميع المؤشرات فوق ٦٥٪ في المتوسط.'; },
+  filterSch(){ const q=(document.getElementById('schQ').value||'').trim(),lev=document.getElementById('schLev').value,sort=document.getElementById('schSort').value; let list=SCHOOLS.filter(sc=>{if(lev!=='all'&&sc.level!==lev)return false; if(q&&!sc.name.includes(q))return false; return true;}); if(sort==='rank')list.sort((a,b)=>sOv(b.id)-sOv(a.id)); if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name,'ar')); if(sort==='level')list.sort((a,b)=>a.level.localeCompare(b.level,'ar')); const allS=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)); const rMap={}; allS.forEach((s,i)=>rMap[s.id]=i+1); document.getElementById('schGrid').innerHTML=list.map(sc=>{ const ov=sOv(sc.id); return `<div class="sch-card" onclick="D.showDet('${sc.id}')"><div class="sch-rank">${rMap[sc.id]}</div><span class="sch-lv ${lvClass(sc.level)}">${sc.level}</span><div class="sch-name">${sc.name}</div><div style="display:flex;justify-content:space-between;font-size:.75rem;font-weight:800;color:var(--s4);margin-bottom:3px"><span>الإنجاز الكلي</span><span>${ov}٪</span></div><div class="prog-bar"><div class="prog-fill" style="width:${ov}%"></div></div><div class="sch-stats">${DOMAINS.map(d=>`<div class="ss"><b>${sDom(sc.id,d)}٪</b><small>${DICONS[d]}</small></div>`).join('')}</div></div>`; }).join(''); },
+  renderSchools(){ this.filterSch(); },
+  showDet(sid){ const sc=SCHOOLS.find(s=>s.id===sid); if(!sc)return; const ov=sOv(sc.id),[sl,sc2]=stLabel(ov); const baseOv=getBaselineOverall(sid); let baseHtml=''; if(baseOv!==null) baseHtml=`<div class="det-row"><span class="det-lbl">📋 خط الأساس (التقويم الخارجي)</span><span class="det-val">${baseOv}% ${baseOv<ov?'(تحسن)':baseOv>ov?'(تراجع)':'(ثابت)'}</span></div>`; const top3=INDS.map(ind=>({ind,v:getScore(sid,ind.uid)})).sort((a,b)=>b.v-a.v).slice(0,3); const bot3=INDS.map(ind=>({ind,v:getScore(sid,ind.uid)})).sort((a,b)=>a.v-b.v).slice(0,3); document.getElementById('detContent').innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--s2),var(--b2));display:flex;align-items:center;justify-content:center;font-size:1.3rem">🏫</div><div><h3 style="margin:0">${sc.name}</h3><span class="sch-lv ${lvClass(sc.level)}">${sc.level}</span> <span class="sp ${sc2}">${sl}</span></div></div><div style="background:rgba(78,160,120,.1);border-radius:10px;padding:10px;text-align:center;margin-bottom:12px"><span style="font-size:2.5rem;font-weight:900;color:var(--s4)">${ov}٪</span><br><small style="color:var(--ink3);font-weight:700">معدل الإنجاز الكلي</small><div class="prog-bar" style="margin-top:7px"><div class="prog-fill" style="width:${ov}%"></div></div></div>${DOMAINS.map(d=>{const v=sDom(sc.id,d); return`<div class="det-row"><span class="det-lbl">${DICONS[d]} ${d}</span><span class="det-val" style="color:${v>=80?'#6ee7a0':v>=70?'#93c5fd':'#fca5a5'}">${v}٪</span></div>`;}).join('')}${baseHtml}<h4 style="color:var(--s4);margin:12px 0 6px">✅ أقوى ٣ مؤشرات</h4>${top3.map(({ind,v})=>`<div style="font-size:.78rem;background:rgba(46,125,82,.1);border-radius:7px;padding:5px 8px;margin-bottom:3px;color:#86efac"><b>${v}٪</b> — ${ind.text}</div>`).join('')}<h4 style="color:var(--red2);margin:12px 0 6px">⚠️ أضعف ٣ مؤشرات</h4>${bot3.map(({ind,v})=>`<div style="font-size:.78rem;background:rgba(185,28,28,.1);border-radius:7px;padding:5px 8px;margin-bottom:3px;color:#fca5a5"><b>${v}٪</b> — ${ind.text}</div>`).join('')}<button class="save-btn" style="margin-top:14px;width:100%" onclick="closeDet();showPage('dataentry',document.querySelector('.vtab[onclick*=dataentry]'));D.openSchoolDE('${sid}')">✏️ فتح في تبويب الإدخال</button>`; document.getElementById('detOv').classList.add('open'); },
+  buildRecs(){ _recs=[{p:'high',icon:'🚨',title:'زيارات إشرافية عاجلة للمدارس دون 70٪',body:`${SCHOOLS.filter(s=>sOv(s.id)<70).map(s=>s.name).join(' · ')||'لا توجد حالياً'}. زيارات ميدانية مع تكليف مشرفين متخصصين.`},{p:'high',icon:'🏗',title:'برنامج طارئ لتحسين البيئة المدرسية',body:`مجال البيئة سجّل متوسط ${dAvg('البيئة المدرسية')}٪. رفع طلبات صيانة وتفعيل لجان السلامة.`},{p:'high',icon:'📋',title:'إلزام المدارس باستكمال السجلات الناقصة',body:'سقف أسبوعين لاستكمال جميع السجلات مع متابعة إشرافية أسبوعية.'},{p:'med',icon:'🎓',title:'برنامج تدريبي في استراتيجيات التدريس',body:`متوسط مجال التعليم والتعلم ${dAvg('التعليم والتعلم')}٪. ورش تطبيقية للتدريس المتمايز وتوظيف التقنية.`},{p:'med',icon:'📊',title:'تفعيل منظومة التقويم الذاتي',body:'المدارس التي تكمل منصتها تكتسب ميزة في جاهزية الاعتماد. جلسة تدريبية مشتركة لمديري المدارس.'},{p:'med',icon:'🤝',title:'تعزيز الشراكة المجتمعية',body:'تفعيل مجالس أولياء الأمور وتوثيق الشراكات كشواهد داعمة للاعتماد.'},{p:'low',icon:'🏆',title:'نشر تجارب المدارس المتميزة',body:`${[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)).slice(0,3).map(s=>s.name).join('، ')}. زيارات تبادلية بين المدارس.`},{p:'low',icon:'📅',title:'اجتماعات دورية لمراجعة المؤشرات',body:'اجتماع شهري لمراجعة التقدم وتحديث الخطط، مع تقرير ربعي لإدارة التعليم.'}]; this.renderRec(); },
+  renderRec(){ const list=_recs.filter(r=>recF==='all'||r.p===recF); document.getElementById('recGrid').innerHTML=list.map(r=>`<div class="rec-card"><div class="rec-icon">${r.icon}</div><div><div class="rec-title">${r.title}</div><div class="rec-body">${r.body}</div></div><div><span class="pri-badge ${{high:'p-h',med:'p-m',low:'p-l'}[r.p]}">${{high:'عاجل',med:'متوسط',low:'متابعة'}[r.p]}</span></div></div>`).join(''); },
+  filterRec(f,btn){ recF=f; document.querySelectorAll('#page-recommendations .tbx').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); this.renderRec(); },
+  exportCSV(){ if(!Auth.can('export')){alert('ليس لديك صلاحية التصدير');return;} let csv='المؤشر,'+SCHOOLS.map(s=>s.name).join(',')+'،المتوسط\n'; INDS.forEach(ind=>{const v=SCHOOLS.map(sc=>getScore(sc.id,ind.uid));const avg=Math.round(v.reduce((a,b)=>a+b,0)/v.length);csv+=`"${ind.text}",${v.join(',')},${avg}\n`;}); const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));a.download='مؤشرات_مدارس_بيش.csv';a.click(); },
+  refresh(){ ['cBars','cDist','cDomAvg','cTrend','cRadar','cStack'].forEach(id=>{const c=document.getElementById(id);if(c){const ch=Chart.getChart(c);if(ch)ch.destroy();}}); this.init(); },
+  renderSidePicker(){ const allS=[...SCHOOLS].sort((a,b)=>sOv(b.id)-sOv(a.id)); document.getElementById('schPickerList').innerHTML=allS.map(sc=>{ const ov=sOv(sc.id); const dotCol=ov>=80?'#4caf7d':ov>=70?'#4a90d9':ov>=60?'#fbbf24':'#f87171'; return `<button class="sch-pick ${deSchool&&deSchool.id===sc.id?'active':''}" onclick="D.openSchoolDE('${sc.id}')"><span class="lv-dot" style="background:${dotCol}"></span><span>${sc.name}</span><span class="sp-pct">${ov}٪</span></button>`; }).join(''); },
+  openSchoolDE(sid){ deSchool=SCHOOLS.find(s=>s.id===sid); if(!deSchool)return; this.renderSidePicker(); deDomain=DOMAINS[0]; this.renderDEMain(); },
+  renderDEMain(){ if(!deSchool){document.getElementById('deMain').innerHTML='<div style="color:var(--ink3);text-align:center;padding:40px;font-weight:700">← اختر مدرسة من القائمة</div>';return;} const ov=sOv(deSchool.id); const [sl,sc2]=stLabel(ov); document.getElementById('deBadge').textContent=deSchool.name; const domSumBar=DOMAINS.map(d=>{const v=sDom(deSchool.id,d);return`<div class="dsb-item"><span class="dsb-val">${v}٪</span><small class="dsb-lbl">${DICONS[d]} ${d.split(' ')[0]}</small></div>`;}).join(''); const domTabsHTML=DOMAINS.map(d=>`<button class="dom-tab ${d===deDomain?'active':''}" onclick="deDomain='${d}';D.renderDEMain()">${DICONS[d]} ${d}</button>`).join(''); const domInds=INDS.filter(i=>i.domain===deDomain); const indsHTML=domInds.map(ind=>{ const score=getScore(deSchool.id,ind.uid); const notes=getNotes(deSchool.id,ind.uid); const reqsHTML=ind.reqs.map((req,ri)=>{ const checked=getReqCheck(deSchool.id,ind.uid,ri); return `<label class="req-row ${checked?'checked':''}"><input type="checkbox" ${checked?'checked':''} onchange="setReqCheck('${deSchool.id}','${ind.uid}',${ri},this.checked); D._refreshIndDisplay('${deSchool.id}','${ind.uid}'); D.refreshAllCharts()"><span>${req}</span></label>`; }).join(''); const reqDone=ind.reqs.filter((_,ri)=>getReqCheck(deSchool.id,ind.uid,ri)).length; return `<div class="ind-entry-card" id="iec_${ind.uid}"><div class="ind-entry-head" onclick="toggleIEC('${ind.uid}')"><span class="ind-code">${ind.id}</span><div><div class="ind-text">${ind.text}</div><div class="ind-meta">${ind.standard} • ${reqDone}/${ind.reqs.length} متطلبات</div></div><div class="ind-progress-mini"><div class="ipm-bar"><div class="ipm-fill" id="ipmf_${ind.uid}" style="width:${score}%"></div></div><div class="ipm-pct" id="ipmp_${ind.uid}">${score}٪</div></div></div><div class="ind-entry-body"><div style="font-size:.8rem;font-weight:800;color:var(--s5);margin-bottom:8px">📋 متطلبات المؤشر (${ind.reqs.length})</div>${reqsHTML}<div style="margin-top:12px"><div class="score-row"><span class="score-label">الدرجة اليدوية:</span><input type="range" class="score-slider" min="0" max="100" value="${score}" id="sl_${ind.uid}" oninput="setScore('${deSchool.id}','${ind.uid}',this.value); D._refreshIndDisplay('${deSchool.id}','${ind.uid}'); D.refreshAllCharts()"><span class="score-val" id="sv_${ind.uid}">${score}٪</span><div class="score-btns">${[0,25,50,75,100].map(v=>`<button class="s-btn ${score===v?'active':''}" onclick="setScore('${deSchool.id}','${ind.uid}',${v}); D._refreshIndDisplay('${deSchool.id}','${ind.uid}'); D.refreshAllCharts()">${v}</button>`).join('')}</div></div></div><div style="font-size:.78rem;font-weight:800;color:var(--ink3);margin-top:8px;margin-bottom:4px">📝 ملاحظات وشواهد</div><textarea class="notes-area" placeholder="أضف ملاحظاتك والشواهد الداعمة..." onchange="setNotes('${deSchool.id}','${ind.uid}',this.value)">${notes}</textarea><div style="display:flex;gap:8px;align-items:center;margin-top:10px"><button class="save-btn" onclick="saveUserData(); document.getElementById('savedStatus').innerHTML='<span class=\'saved-badge\'>✅ تم الحفظ</span>'; setTimeout(()=>document.getElementById('savedStatus').innerHTML='',2000); D.refreshAllCharts()">💾 حفظ وتحديث</button></div></div></div>`; }).join(''); document.getElementById('deMain').innerHTML=`<div class="de-school-header"><div class="de-school-info"><h3>${deSchool.name}</h3><p><span class="sch-lv ${lvClass(deSchool.level)}">${deSchool.level}</span> <span class="sp ${sc2}">${sl}</span></p></div><div class="dom-sum-bar">${domSumBar}</div><div class="de-score-big"><span>${ov}٪</span><small>الإنجاز الكلي</small></div></div><div class="dom-tabs">${domTabsHTML}</div><div style="font-size:.8rem;color:var(--ink3);font-weight:700;margin-bottom:10px">${DICONS[deDomain]} ${deDomain} — ${domInds.length} مؤشرات</div>${indsHTML}`; },
+  _refreshIndDisplay(sid,uid){ const score=getScore(sid,uid); const ipmf=document.getElementById(`ipmf_${uid}`); if(ipmf)ipmf.style.width=score+'%'; const ipmp=document.getElementById(`ipmp_${uid}`); if(ipmp)ipmp.textContent=score+'٪'; const sl=document.getElementById(`sl_${uid}`); if(sl)sl.value=score; const sv=document.getElementById(`sv_${uid}`); if(sv)sv.textContent=score+'٪'; const ind=INDS.find(i=>i.uid===uid); if(ind){ const card=document.getElementById(`iec_${uid}`); if(card)card.querySelectorAll('.req-row').forEach((row,ri)=>{ const c=getReqCheck(sid,uid,ri); row.classList.toggle('checked',c); const cb=row.querySelector('input'); if(cb)cb.checked=c; }); } }
+};
+
+function showPage(id,btn){ const role=window.CURRENT_ROLE||'data_entry'; if(id==='usermgmt'&&role!=='supervisor')return; if((id==='recommendations')&&role==='data_entry')return; document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active')); document.getElementById('page-'+id).classList.add('active'); if(btn)btn.classList.add('active'); if(id==='dataentry')D.renderSidePicker(); if(id==='baseline')renderBaselineUI(); if(id==='usermgmt')Auth.renderLog(); }
+function closeDet(){ document.getElementById('detOv').classList.remove('open'); }
+function toggleIEC(uid){ const c=document.getElementById('iec_'+uid); if(c)c.classList.toggle('open'); }
+function showCell(sid,uid,e){ const sc=SCHOOLS.find(s=>s.id===sid),ind=INDS.find(i=>i.uid===uid); if(!sc||!ind)return; const v=getScore(sid,uid); const t=document.getElementById('tip'); t.innerHTML=`<b>${sc.name}</b><br>${ind.text}<br><b style="color:${v>=80?'#4caf7d':v>=70?'#4a90d9':v>=60?'#fbbf24':'#f87171'}">${v}٪</b>`; t.style.display='block'; t.style.top=(e.clientY-75)+'px'; t.style.right=(window.innerWidth-e.clientX+10)+'px'; setTimeout(()=>t.style.display='none',2500); }
+document.addEventListener('click',e=>{if(!e.target.closest('.det-panel')&&!e.target.closest('.sch-card')&&!e.target.closest('.lb-row')&&!e.target.closest('.hm-cell'))document.getElementById('detOv').classList.remove('open');});
+window.addEventListener('DOMContentLoaded',()=>{ D.init(); if(!Auth.checkSession()){/* overlay stays */} });
+</script>
+</body>
+</html>
