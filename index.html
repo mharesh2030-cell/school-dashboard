@@ -285,36 +285,33 @@ select.tbx{padding-left:20px}
 .req-row.checked{background:rgba(46,125,82,.08);border-color:rgba(46,125,82,.25);color:var(--s5)}
 
 /* Score slider */
-.score-row{display:flex;align-items:center;gap:10px;margin:10px 0}
-.score-label{font-size:.78rem;font-weight:800;color:var(--ink2);min-width:90px}
-/* ══ STEPPER — عداد الدرجات ══ */
-.stepper{display:flex;align-items:center;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid var(--s4);background:rgba(255,255,255,.04);height:34px}
-.stepper-btn{width:32px;height:34px;border:none;background:rgba(78,160,120,.15);color:var(--s4);font-size:1.1rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center;user-select:none}
-.stepper-btn:hover{background:rgba(78,160,120,.35);color:#fff}
-.stepper-btn:active{background:rgba(78,160,120,.55);transform:scale(.93)}
-.stepper-btn.big-step{font-size:.7rem;font-weight:900}
-.stepper-val{width:64px;background:transparent;border:none;border-left:1px solid rgba(78,160,120,.2);border-right:1px solid rgba(78,160,120,.2);color:#fff;font-family:inherit;font-size:.88rem;font-weight:900;text-align:center;height:100%;padding:0 4px}
-.stepper-val:focus{outline:none;background:rgba(78,160,120,.08)}
-.stepper-pct{font-size:.82rem;font-weight:900;color:var(--s4);min-width:42px;text-align:left}
 .score-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:8px}
-.score-label{font-size:.78rem;font-weight:800;color:var(--ink2);min-width:70px}
-/* ══ STEPPER خط الأساس ══ */
-.bl-stepper{display:flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);height:30px}
-.bl-stepper-btn{width:26px;height:30px;border:none;background:rgba(255,255,255,.06);color:var(--ink2);font-size:.95rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.bl-stepper-btn:hover{background:rgba(78,160,120,.25);color:var(--s4)}
-.bl-stepper-btn:active{transform:scale(.9)}
-.bl-stepper-val{width:58px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1);color:#fff;font-family:inherit;font-size:.82rem;font-weight:900;text-align:center;height:100%;padding:0 2px}
-.bl-stepper-val:focus{outline:none;background:rgba(78,160,120,.08)}
-.bl-ov-stepper{display:flex;align-items:center;gap:0;border-radius:9px;overflow:hidden;border:1px solid rgba(78,160,120,.3);background:rgba(255,255,255,.06);height:36px}
-.bl-ov-stepper-btn{width:30px;height:36px;border:none;background:rgba(78,160,120,.1);color:#6ee7a0;font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.bl-ov-stepper-btn:hover{background:rgba(78,160,120,.3)}
-.bl-ov-stepper-val{width:72px;background:transparent;border:none;border-left:1px solid rgba(78,160,120,.2);border-right:1px solid rgba(78,160,120,.2);color:#fff;font-family:inherit;font-size:.95rem;font-weight:900;text-align:center;height:100%;padding:0 4px}
-.bl-ov-stepper-val:focus{outline:none;background:rgba(78,160,120,.08)}
-.bl-pick-stepper{display:flex;align-items:center;gap:0;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);height:26px}
-.bl-pick-stepper-btn{width:22px;height:26px;border:none;background:rgba(255,255,255,.05);color:var(--ink3);font-size:.8rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0}
-.bl-pick-stepper-btn:hover{background:rgba(78,160,120,.2);color:var(--s4)}
-.bl-pick-stepper-val{width:52px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);color:#fff;font-family:inherit;font-size:.75rem;font-weight:900;text-align:center;height:100%;padding:0 2px}
-.bl-pick-stepper-val:focus{outline:none}
+.score-label{font-size:.78rem;font-weight:800;color:var(--ink2);white-space:nowrap}
+.score-val{font-size:.85rem;font-weight:900;color:var(--s4);min-width:44px}
+/* ══ stepper — عداد الدرجات ══ */
+.stepper{display:flex;align-items:center;border-radius:9px;overflow:hidden;border:1.5px solid var(--s4);background:rgba(255,255,255,.04);height:34px}
+.st-btn{width:30px;height:34px;border:none;background:rgba(78,160,120,.12);color:var(--s4);font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center;user-select:none}
+.st-btn:hover{background:rgba(78,160,120,.32);color:#fff}
+.st-btn:active{background:rgba(78,160,120,.5);transform:scale(.92)}
+.st-btn.sm{font-size:.65rem;font-weight:900;letter-spacing:-.5px}
+.st-val{width:60px;background:transparent;border:none;border-left:1px solid rgba(78,160,120,.2);border-right:1px solid rgba(78,160,120,.2);color:#fff;font-family:inherit;font-size:.88rem;font-weight:900;text-align:center;height:100%;padding:0 2px}
+.st-val:focus{outline:none;background:rgba(78,160,120,.08)}
+/* ══ stepper خط الأساس ══ */
+.bl-stepper{display:flex;align-items:center;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);height:28px}
+.bst-btn{width:24px;height:28px;border:none;background:rgba(255,255,255,.05);color:var(--ink3);font-size:.85rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.bst-btn:hover{background:rgba(78,160,120,.2);color:var(--s4)}
+.bst-val{width:54px;background:transparent;border:none;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);color:#fff;font-family:inherit;font-size:.8rem;font-weight:900;text-align:center;height:100%;padding:0 2px}
+.bst-val:focus{outline:none;background:rgba(78,160,120,.07)}
+.bl-ov-stepper{display:flex;align-items:center;border-radius:9px;overflow:hidden;border:1px solid rgba(78,160,120,.3);background:rgba(255,255,255,.06);height:36px}
+.bov-btn{width:28px;height:36px;border:none;background:rgba(78,160,120,.1);color:#6ee7a0;font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;display:flex;align-items:center;justify-content:center}
+.bov-btn:hover{background:rgba(78,160,120,.28)}
+.bov-val{width:70px;background:transparent;border:none;border-left:1px solid rgba(78,160,120,.2);border-right:1px solid rgba(78,160,120,.2);color:#fff;font-family:inherit;font-size:.95rem;font-weight:900;text-align:center;height:100%;padding:0 2px}
+.bov-val:focus{outline:none;background:rgba(78,160,120,.07)}
+.score-label{font-size:.78rem;font-weight:800;color:var(--ink2);min-width:90px}
+.score-slider{flex:1;accent-color:var(--s4);height:4px}
+.score-num-inp{width:90px;background:rgba(255,255,255,.07);border:1.5px solid var(--s4);color:#fff;border-radius:9px;padding:6px 10px;font-family:inherit;font-size:.9rem;font-weight:800;text-align:center;-moz-appearance:textfield;appearance:textfield;}
+.score-num-inp::-webkit-inner-spin-button,.score-num-inp::-webkit-outer-spin-button{display:none}
+.score-num-inp:focus{outline:none;border-color:var(--s3);background:rgba(78,160,120,.1)}
 .score-val{font-size:.85rem;font-weight:900;color:var(--s4);min-width:36px;text-align:left}
 .score-btns{display:flex;gap:5px}
 .s-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-size:.8rem;font-weight:900;cursor:pointer;font-family:inherit;transition:.15s;display:flex;align-items:center;justify-content:center}
@@ -420,6 +417,26 @@ select.tbx{padding-left:20px}
 .rb-sv{background:rgba(244,196,48,.12);color:#fde68a;border-color:rgba(244,196,48,.25)}
 .logout-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-radius:999px;padding:4px 11px;font-size:.72rem;font-weight:800;cursor:pointer;font-family:'Tajawal',sans-serif;transition:.2s}
 .logout-btn:hover{background:rgba(255,255,255,.14)}
+
+/* ══ شريط المزامنة ══ */
+.sync-bar{position:fixed;bottom:0;left:0;right:0;z-index:8000;background:rgba(8,20,16,.96);border-top:1px solid rgba(78,160,120,.18);display:flex;align-items:center;gap:10px;padding:6px 16px;font-size:.76rem;font-weight:700;backdrop-filter:blur(8px)}
+.sync-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:#94a3b8}
+.sync-dot.ok{background:#4caf7d;box-shadow:0 0 5px #4caf7d}
+.sync-dot.busy{background:#fbbf24;animation:sdpulse 1s infinite}
+@keyframes sdpulse{0%,100%{opacity:1}50%{opacity:.2}}
+.sync-txt{color:#94a3b8;flex:1}
+.sync-acts{display:flex;gap:6px;margin-right:auto}
+.sync-btn2{background:rgba(78,160,120,.12);border:1px solid rgba(78,160,120,.22);color:#6ee7a0;border-radius:6px;padding:3px 10px;font-size:.73rem;font-weight:800;cursor:pointer;font-family:inherit;transition:.18s}
+.sync-btn2:hover{background:rgba(78,160,120,.28)}
+.sync-btn2.imp{background:rgba(30,87,153,.15);border-color:rgba(74,144,217,.25);color:#93c5fd}
+.sync-btn2.exp{background:rgba(161,130,0,.15);border-color:rgba(161,130,0,.25);color:#fde68a}
+.sync-btn2.rst{background:rgba(185,28,28,.12);border-color:rgba(185,28,28,.22);color:#fca5a5}
+.sync-modal-wrap{position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center}
+.sync-modal-box{background:#0c1d18;border:1px solid rgba(78,160,120,.25);border-radius:14px;padding:24px;max-width:500px;width:92%;max-height:80vh;overflow-y:auto}
+.sync-modal-box h3{font-size:.95rem;font-weight:900;color:#4caf7d;margin:0 0 12px}
+.sync-modal-box textarea{width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:9px;font-family:monospace;font-size:.68rem;resize:vertical;min-height:90px;direction:ltr}
+.sync-modal-box textarea:focus{outline:none;border-color:#4caf7d}
+main{padding-bottom:50px}
 </style>
 </head>
 <body>
@@ -507,6 +524,18 @@ select.tbx{padding-left:20px}
   </div>
 </div>
 
+
+<div class="sync-bar" id="syncBar">
+  <span class="sync-dot" id="syncDot"></span>
+  <span class="sync-txt" id="syncTxt">وضع محلي</span>
+  <div class="sync-acts">
+    <button class="sync-btn2 exp" onclick="SY.exp()">📤 تصدير</button>
+    <button class="sync-btn2 imp" onclick="SY.showImp()">📥 استيراد</button>
+    <button class="sync-btn2" onclick="SY.copyLink()">🔗 رابط</button>
+    <button class="sync-btn2 rst" onclick="SY.reset()">🗑</button>
+  </div>
+</div>
+<input type="file" id="sy_file" accept=".json" style="display:none" onchange="SY.impFile(this)">
 <script>
 // ═══════════════════════════════════════════
 //  STATIC DATA (نفس النسخة الأصلية)
@@ -614,89 +643,7 @@ function sDom(sid,d){ const ii=INDS.filter(i=>i.domain===d); const v=ii.map(i=>g
 function dAvg(d){ return parseFloat((SCHOOLS.reduce((s,sc)=>s+sDom(sc.id,d),0)/SCHOOLS.length).toFixed(2)); }
 function totAvg(){ return parseFloat((SCHOOLS.reduce((s,sc)=>s+sOv(sc.id),0)/SCHOOLS.length).toFixed(2)); }
 
-// ══ STEPPER — عداد الدرجات ══════════════════════════════════
-function stepperClamp(v){ return parseFloat(Math.min(100,Math.max(0,v)).toFixed(2)); }
-function stepVal(id){ const el=document.getElementById(id); if(!el)return 0; return stepperClamp(toNum(el.value)||0); }
-
-/* عداد تبويب الإدخال */
-function stepDE(sid,uid,delta){
-  const el=document.getElementById('sl_'+uid); if(!el)return;
-  const cur=stepVal('sl_'+uid);
-  const nv=stepperClamp(parseFloat((cur+delta).toFixed(2)));
-  el.value=fmt(nv);
-  setScore(sid,uid,nv);
-  D._refreshIndDisplay(sid,uid);
-  D.refreshAllCharts();
-}
-function stepDECommit(sid,uid){
-  const el=document.getElementById('sl_'+uid); if(!el)return;
-  const v=toNumClamped(el.value,0,100);
-  const nv=v!==null?v:0;
-  el.value=fmt(nv);
-  setScore(sid,uid,nv);
-  D._refreshIndDisplay(sid,uid);
-  D.refreshAllCharts();
-}
-
-/* عداد خط الأساس — مؤشر */
-function stepBLInd(sid,uid,delta){
-  const el=document.getElementById('blin_'+uid); if(!el)return;
-  const raw=el.value; const cur=(raw==='')?0:toNum(raw)||0;
-  const nv=stepperClamp(parseFloat((cur+delta).toFixed(2)));
-  el.value=fmt(nv);
-  onBlIndInput(sid,uid,nv);
-}
-function stepBLIndCommit(sid,uid){
-  const el=document.getElementById('blin_'+uid); if(!el)return;
-  const v=toNumClamped(el.value,0,100);
-  const nv=v!==null?v:null;
-  if(nv!==null){el.value=fmt(nv); onBlIndInput(sid,uid,nv);}
-  else{el.value=''; onBlIndInput(sid,uid,'');}
-}
-
-/* عداد خط الأساس — مجال */
-function stepBLDom(sid,domain,delta){
-  const el=document.getElementById('bldom_'+domain); if(!el)return;
-  const cur=(el.value==='')?0:toNum(el.value)||0;
-  const nv=stepperClamp(parseFloat((cur+delta).toFixed(2)));
-  el.value=fmt(nv);
-}
-function stepBLDomCommit(sid,domain){
-  const el=document.getElementById('bldom_'+domain); if(!el)return;
-  const v=toNumClamped(el.value,0,100);
-  if(v!==null){el.value=fmt(v);}else{el.value='';}
-  onBlDomSave(sid,domain);
-}
-
-/* عداد خط الأساس — المعدل العام */
-function stepBLOv(sid,delta){
-  const el=document.getElementById('blOvInp'); if(!el)return;
-  const cur=(el.value==='')?0:toNum(el.value)||0;
-  const nv=stepperClamp(parseFloat((cur+delta).toFixed(2)));
-  el.value=fmt(nv);
-  onBlOvSave(sid);
-}
-function stepBLOvCommit(sid){
-  const el=document.getElementById('blOvInp'); if(!el)return;
-  const v=toNumClamped(el.value,0,100);
-  if(v!==null){el.value=fmt(v);}else{el.value='';}
-  onBlOvSave(sid);
-}
-
-/* عداد picker المدارس (إدخال + خط الأساس) */
-function stepPickerBL(sid,delta){
-  const el=document.getElementById('blpk_'+sid)||document.getElementById('blp_'+sid); if(!el)return;
-  const cur=(el.value==='')?0:toNum(el.value)||0;
-  const nv=stepperClamp(parseFloat((cur+delta).toFixed(2)));
-  el.value=fmt(nv);
-  setPickerBL(sid,nv);
-}
-function stepPickerBLCommit(sid){
-  const el=document.getElementById('blpk_'+sid)||document.getElementById('blp_'+sid); if(!el)return;
-  const v=toNumClamped(el.value,0,100);
-  if(v!==null){el.value=fmt(v);setPickerBL(sid,v);}else{el.value='';setPickerBL(sid,'');}
-}
-
+// ── تصنيف خط الأساس تلقائياً ──────────────────────────────
 function blClassify(pct){
   if(pct===null||pct===undefined||pct==='')return{label:'—',cls:'lv-nd'};
   const v=parseFloat(String(pct));
@@ -799,16 +746,12 @@ function renderBaselineUI(){
         </button>
         <div class="sch-bl-wrap" title="أدخل نتيجة التقويم الخارجي مباشرة هنا">
           <span style="font-size:.68rem;color:var(--ink3);white-space:nowrap">🏷 أساس:</span>
-          <div class="bl-pick-stepper" onclick="event.stopPropagation()">
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',-1)">◀◀</button>
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',-0.25)">◀</button>
-            <input class="bl-pick-stepper-val" type="text" inputmode="decimal"
-              placeholder="—" value="${ov!==null?fmt(ov):''}"
-              id="blpk_${sc.id}"
-              onblur="stepPickerBLCommit('${sc.id}')" onkeydown="if(event.key==='Enter')stepPickerBLCommit('${sc.id}')">
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',0.25)">▶</button>
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',1)">▶▶</button>
-          </div>
+          <input class="sch-bl-inp" type="text" inputmode="decimal"
+            placeholder="0–100" value="${ov!==null?fmt(ov):''}"
+            id="blpk_${sc.id}"
+            onchange="setPickerBL('${sc.id}',this.value)"
+            onblur="var v=toNumClamped(this.value,0,100);if(v!==null){this.value=fmt(v);setPickerBL('${sc.id}',v);}else if(this.value===''){setPickerBL('${sc.id}','');}"
+            onclick="event.stopPropagation()">
           <span class="sch-bl-badge ${blCls.cls}" id="blpkbadge_${sc.id}">${blCls.label}</span>
         </div>
       </div>`;
@@ -833,13 +776,13 @@ function renderBaselineUI(){
     const ddtHtml=ddt===null?'':(ddt>0?`<span style="color:#6ee7a0;font-size:.75rem">▲${ddt}٪</span>`:ddt<0?`<span style="color:#fca5a5;font-size:.75rem">▼${Math.abs(ddt)}٪</span>`:`<span style="color:#94a3b8;font-size:.75rem">ثابت</span>`);
     const indRows=domInds.map(ind=>{
       const blv=getBaselineInd(sid,ind.uid), curv=getScore(sid,ind.uid), dt=blv!==null?curv-blv:null;
-      return `<div class="bl-ind-row"><div class="bl-ind-label">${ind.text}<small>${ind.id} · ${ind.standard}</small></div><div class="bl-stepper"><button class="bl-stepper-btn" onclick="stepBLInd('${sid}','${ind.uid}',-1)" title="-1">◀◀</button><button class="bl-stepper-btn" onclick="stepBLInd('${sid}','${ind.uid}',-0.25)" title="-0.25">◀</button><input class="bl-stepper-val" type="text" inputmode="decimal" id="blin_${ind.uid}" placeholder="—" value="${blv!==null?fmt(blv):''}" onblur="stepBLIndCommit('${sid}','${ind.uid}')" onkeydown="if(event.key==='Enter')stepBLIndCommit('${sid}','${ind.uid}')"><button class="bl-stepper-btn" onclick="stepBLInd('${sid}','${ind.uid}',0.25)" title="+0.25">▶</button><button class="bl-stepper-btn" onclick="stepBLInd('${sid}','${ind.uid}',1)" title="+1">▶▶</button></div><span class="bl-delta ${dt===null?'nd':dt>0?'up':dt<0?'dn':'eq'}" id="bldt_${ind.uid}">${dt===null?'—':dt>0?'▲'+fmt(dt):dt<0?'▼'+fmt(Math.abs(dt)):fmt(0)}</span></div>`;
+      return `<div class="bl-ind-row"><div class="bl-ind-label">${ind.text}<small>${ind.id} · ${ind.standard}</small></div><div class="bl-stepper"><button class="bst-btn" onclick="stBLInd('${sid}','${ind.uid}',-1)">◀◀</button><button class="bst-btn" onclick="stBLInd('${sid}','${ind.uid}',-0.25)">◀</button><input class="bst-val" type="text" inputmode="decimal" placeholder="—" value="${blv!==null?fmt(blv):''}" id="blin_${ind.uid}" onblur="stBLIndC('${sid}','${ind.uid}')" onkeydown="if(event.key==='Enter')stBLIndC('${sid}','${ind.uid}')"><button class="bst-btn" onclick="stBLInd('${sid}','${ind.uid}',0.25)">▶</button><button class="bst-btn" onclick="stBLInd('${sid}','${ind.uid}',1)">▶▶</button></div><span class="bl-delta ${dt===null?'nd':dt>0?'up':dt<0?'dn':'eq'}" id="bldt_${ind.uid}">${dt===null?'—':dt>0?'▲'+fmt(dt):dt<0?'▼'+fmt(Math.abs(dt)):fmt(0)}</span></div>`;
     }).join('');
-    return `<div class="bl-section" id="blsec_${di}"><div class="bl-section-head" onclick="toggleBlSection(${di})"><span style="font-size:1.1rem">${DICONS[d]}</span><span class="bl-sec-title">${d} <small style="font-weight:600;color:var(--ink3)">(${domInds.length} مؤشراً)</small></span><span class="bl-sec-avg">مرجعي: <b style="color:var(--s4)">${blDv!==null?blDv+'٪':'—'}</b> · حالي: <b style="color:#93c5fd">${curDv}٪</b> ${ddtHtml}</span><span class="bl-chevron">▼</span></div><div class="bl-section-body"><div class="bl-domain-head"><span>${DICONS[d]} درجة المجال الإجمالية (مرجعي)</span><div class="bl-domain-score"><div class="bl-stepper"><button class="bl-stepper-btn" onclick="stepBLDom('${sid}','${d}',-1)">◀◀</button><button class="bl-stepper-btn" onclick="stepBLDom('${sid}','${d}',-0.25)">◀</button><input class="bl-stepper-val" type="text" inputmode="decimal" id="bldom_${d}" placeholder="تلقائي" value="${blDv!==null?fmt(blDv):''}" onblur="stepBLDomCommit('${sid}','${d}')" onkeydown="if(event.key==='Enter')stepBLDomCommit('${sid}','${d}')"><button class="bl-stepper-btn" onclick="stepBLDom('${sid}','${d}',0.25)">▶</button><button class="bl-stepper-btn" onclick="stepBLDom('${sid}','${d}',1)">▶▶</button></div><button class="bl-save-domain-btn" onclick="stepBLDomCommit('${sid}','${d}')">💾 حفظ</button></div></div><div class="bl-ind-grid">${indRows}</div></div></div>`;
+    return `<div class="bl-section" id="blsec_${di}"><div class="bl-section-head" onclick="toggleBlSection(${di})"><span style="font-size:1.1rem">${DICONS[d]}</span><span class="bl-sec-title">${d} <small style="font-weight:600;color:var(--ink3)">(${domInds.length} مؤشراً)</small></span><span class="bl-sec-avg">مرجعي: <b style="color:var(--s4)">${blDv!==null?blDv+'٪':'—'}</b> · حالي: <b style="color:#93c5fd">${curDv}٪</b> ${ddtHtml}</span><span class="bl-chevron">▼</span></div><div class="bl-section-body"><div class="bl-domain-head"><span>${DICONS[d]} درجة المجال الإجمالية (مرجعي)</span><div class="bl-domain-score"><div class="bl-stepper"><button class="bst-btn" onclick="stBLDom('${sid}','${d}',-1)">◀◀</button><button class="bst-btn" onclick="stBLDom('${sid}','${d}',-0.25)">◀</button><input class="bst-val" type="text" inputmode="decimal" placeholder="تلقائي" value="${blDv!==null?fmt(blDv):''}" id="bldom_${d}" onblur="stBLDomC('${sid}','${d}')" onkeydown="if(event.key==='Enter')stBLDomC('${sid}','${d}')"><button class="bst-btn" onclick="stBLDom('${sid}','${d}',0.25)">▶</button><button class="bst-btn" onclick="stBLDom('${sid}','${d}',1)">▶▶</button></div><button class="bl-save-domain-btn" onclick="stBLDomC('${sid}','${d}')">💾 حفظ</button></div></div><div class="bl-ind-grid">${indRows}</div></div></div>`;
   }).join('');
 
   main.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--s2),var(--b2));display:flex;align-items:center;justify-content:center;font-size:1.4rem">🏫</div><div><h3 style="margin:0;font-size:1rem">${currentBaselineSchool.name}</h3><span class="sch-lv ${lvClass(currentBaselineSchool.level)}">${currentBaselineSchool.level}</span></div></div>
-  <div class="bl-overall-row"><span class="bl-ov-label">📊 المعدل العام المرجعي</span><div class="bl-ov-stepper"><button class="bl-ov-stepper-btn" onclick="stepBLOv('${sid}',-1)">◀◀</button><button class="bl-ov-stepper-btn" onclick="stepBLOv('${sid}',-0.25)">◀</button><input class="bl-ov-stepper-val" type="text" inputmode="decimal" id="blOvInp" placeholder="تلقائي" value="${ov!==null?fmt(ov):''}" onblur="stepBLOvCommit('${sid}')" onkeydown="if(event.key==='Enter')stepBLOvCommit('${sid}')"><button class="bl-ov-stepper-btn" onclick="stepBLOv('${sid}',0.25)">▶</button><button class="bl-ov-stepper-btn" onclick="stepBLOv('${sid}',1)">▶▶</button></div><button class="bl-save-all-btn" onclick="stepBLOvCommit('${sid}')">💾 حفظ</button><span style="font-size:.82rem;color:var(--ink3)">حالي: <b style="color:#93c5fd">${fmt(curOv)}٪</b> ${ovSign}</span></div>
+  <div class="bl-overall-row"><span class="bl-ov-label">📊 المعدل العام المرجعي</span><div class="bl-ov-stepper"><button class="bov-btn" onclick="stBLOv('${sid}',-1)">◀◀</button><button class="bov-btn" onclick="stBLOv('${sid}',-0.25)">◀</button><input class="bov-val" type="text" inputmode="decimal" placeholder="تلقائي" value="${ov!==null?fmt(ov):''}" id="blOvInp" onblur="stBLOvC('${sid}')" onkeydown="if(event.key==='Enter')stBLOvC('${sid}')"><button class="bov-btn" onclick="stBLOv('${sid}',0.25)">▶</button><button class="bov-btn" onclick="stBLOv('${sid}',1)">▶▶</button></div><button class="bl-save-all-btn" onclick="stBLOvC('${sid}')">💾 حفظ</button><span style="font-size:.82rem;color:var(--ink3)">حالي: <b style="color:#93c5fd">${fmt(curOv)}٪</b> ${ovSign}</span></div>
   <div class="bl-summary-grid">${domSummary}</div>
   ${domSections}
   <div style="margin-top:10px;font-size:.75rem;color:var(--ink3);text-align:center">💡 درجة المجال تُحسب تلقائياً من متوسط مؤشراته · يمكن تجاوزها يدوياً · المعدل العام يُحسب من المجالات</div>`;
@@ -922,23 +865,19 @@ const D = {
         </button>
         <div class="sch-bl-wrap" title="خط الأساس — نتيجة التقويم الخارجي السابق">
           <span style="font-size:.68rem;color:var(--ink3);white-space:nowrap">🏷 أساس:</span>
-          <div class="bl-pick-stepper" onclick="event.stopPropagation()">
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',-1)">◀◀</button>
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',-0.25)">◀</button>
-            <input class="bl-pick-stepper-val" type="text" inputmode="decimal"
-              placeholder="—" value="${blDisplay}"
-              id="blp_${sc.id}"
-              onblur="stepPickerBLCommit('${sc.id}')" onkeydown="if(event.key==='Enter')stepPickerBLCommit('${sc.id}')">
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',0.25)">▶</button>
-            <button class="bl-pick-stepper-btn" onclick="event.stopPropagation();stepPickerBL('${sc.id}',1)">▶▶</button>
-          </div>
+          <input class="sch-bl-inp" type="text" inputmode="decimal"
+            placeholder="0–100" value="${blDisplay}"
+            id="blp_${sc.id}"
+            onchange="setPickerBL('${sc.id}',this.value)"
+            onblur="var v=toNumClamped(this.value,0,100);if(v!==null){this.value=fmt(v);setPickerBL('${sc.id}',v);}else if(this.value===''){setPickerBL('${sc.id}','');}"
+            onclick="event.stopPropagation()">
           <span class="sch-bl-badge ${blCls.cls}" id="blbadge_${sc.id}">${blCls.label}</span>
         </div>
       </div>`;
     }).join('');
   },
   openSchoolDE(sid){ deSchool=SCHOOLS.find(s=>s.id===sid); if(!deSchool)return; this.renderSidePicker(); deDomain=DOMAINS[0]; this.renderDEMain(); },
-  renderDEMain(){ if(!deSchool){document.getElementById('deMain').innerHTML='<div style="color:var(--ink3);text-align:center;padding:40px;font-weight:700">← اختر مدرسة من القائمة</div>';return;} const ov=sOv(deSchool.id); const [sl,sc2]=stLabel(ov); document.getElementById('deBadge').textContent=deSchool.name; const domSumBar=DOMAINS.map(d=>{const v=sDom(deSchool.id,d);return`<div class="dsb-item"><span class="dsb-val">${fmt(v)}٪</span><small class="dsb-lbl">${DICONS[d]} ${d.split(' ')[0]}</small></div>`;}).join(''); const domTabsHTML=DOMAINS.map(d=>`<button class="dom-tab ${d===deDomain?'active':''}" onclick="deDomain='${d}';D.renderDEMain()">${DICONS[d]} ${d}</button>`).join(''); const domInds=INDS.filter(i=>i.domain===deDomain); const indsHTML=domInds.map(ind=>{ const score=getScore(deSchool.id,ind.uid); const notes=getNotes(deSchool.id,ind.uid); const reqsHTML=ind.reqs.map((req,ri)=>{ const checked=getReqCheck(deSchool.id,ind.uid,ri); return `<label class="req-row ${checked?'checked':''}"><input type="checkbox" ${checked?'checked':''} onchange="setReqCheck('${deSchool.id}','${ind.uid}',${ri},this.checked); D._refreshIndDisplay('${deSchool.id}','${ind.uid}'); D.refreshAllCharts()"><span>${req}</span></label>`; }).join(''); const reqDone=ind.reqs.filter((_,ri)=>getReqCheck(deSchool.id,ind.uid,ri)).length; return `<div class="ind-entry-card" id="iec_${ind.uid}"><div class="ind-entry-head" onclick="toggleIEC('${ind.uid}')"><span class="ind-code">${ind.id}</span><div><div class="ind-text">${ind.text}</div><div class="ind-meta">${ind.standard} • ${reqDone}/${ind.reqs.length} متطلبات</div></div><div class="ind-progress-mini"><div class="ipm-bar"><div class="ipm-fill" id="ipmf_${ind.uid}" style="width:${score}%"></div></div><div class="ipm-pct" id="ipmp_${ind.uid}">${fmt(score)}٪</div></div></div><div class="ind-entry-body"><div style="font-size:.8rem;font-weight:800;color:var(--s5);margin-bottom:8px">📋 متطلبات المؤشر (${ind.reqs.length})</div>${reqsHTML}<div style="margin-top:12px"><div class="score-row"><span class="score-label">الدرجة:</span><div class="stepper"><button class="stepper-btn big-step" onclick="stepDE('${deSchool.id}','${ind.uid}',-1)" title="-1">◀◀</button><button class="stepper-btn" onclick="stepDE('${deSchool.id}','${ind.uid}',-0.25)" title="-0.25">◀</button><input class="stepper-val" type="text" inputmode="decimal" id="sl_${ind.uid}" value="${fmt(score)}" onblur="stepDECommit('${deSchool.id}','${ind.uid}')" onkeydown="if(event.key==='Enter')stepDECommit('${deSchool.id}','${ind.uid}')"><button class="stepper-btn" onclick="stepDE('${deSchool.id}','${ind.uid}',0.25)" title="+0.25">▶</button><button class="stepper-btn big-step" onclick="stepDE('${deSchool.id}','${ind.uid}',1)" title="+1">▶▶</button></div><span class="stepper-pct" id="sv_${ind.uid}">${fmt(score)}٪</span></div></div><div style="font-size:.78rem;font-weight:800;color:var(--ink3);margin-top:8px;margin-bottom:4px">📝 ملاحظات وشواهد</div><textarea class="notes-area" placeholder="أضف ملاحظاتك والشواهد الداعمة..." onchange="setNotes('${deSchool.id}','${ind.uid}',this.value)">${notes}</textarea><div style="display:flex;gap:8px;align-items:center;margin-top:10px"><button class="save-btn" onclick="saveUserData(); document.getElementById('savedStatus').innerHTML='<span class=\'saved-badge\'>✅ تم الحفظ</span>'; setTimeout(()=>document.getElementById('savedStatus').innerHTML='',2000); D.refreshAllCharts()">💾 حفظ وتحديث</button></div></div></div>`; }).join(''); document.getElementById('deMain').innerHTML=`<div class="de-school-header"><div class="de-school-info"><h3>${deSchool.name}</h3><p><span class="sch-lv ${lvClass(deSchool.level)}">${deSchool.level}</span> <span class="sp ${sc2}">${sl}</span></p></div><div class="dom-sum-bar">${domSumBar}</div><div class="de-score-big"><span>${fmt(ov)}٪</span><small>الإنجاز الكلي</small></div></div><div class="dom-tabs">${domTabsHTML}</div><div style="font-size:.8rem;color:var(--ink3);font-weight:700;margin-bottom:10px">${DICONS[deDomain]} ${deDomain} — ${domInds.length} مؤشرات</div>${indsHTML}`; },
+  renderDEMain(){ if(!deSchool){document.getElementById('deMain').innerHTML='<div style="color:var(--ink3);text-align:center;padding:40px;font-weight:700">← اختر مدرسة من القائمة</div>';return;} const ov=sOv(deSchool.id); const [sl,sc2]=stLabel(ov); document.getElementById('deBadge').textContent=deSchool.name; const domSumBar=DOMAINS.map(d=>{const v=sDom(deSchool.id,d);return`<div class="dsb-item"><span class="dsb-val">${fmt(v)}٪</span><small class="dsb-lbl">${DICONS[d]} ${d.split(' ')[0]}</small></div>`;}).join(''); const domTabsHTML=DOMAINS.map(d=>`<button class="dom-tab ${d===deDomain?'active':''}" onclick="deDomain='${d}';D.renderDEMain()">${DICONS[d]} ${d}</button>`).join(''); const domInds=INDS.filter(i=>i.domain===deDomain); const indsHTML=domInds.map(ind=>{ const score=getScore(deSchool.id,ind.uid); const notes=getNotes(deSchool.id,ind.uid); const reqsHTML=ind.reqs.map((req,ri)=>{ const checked=getReqCheck(deSchool.id,ind.uid,ri); return `<label class="req-row ${checked?'checked':''}"><input type="checkbox" ${checked?'checked':''} onchange="setReqCheck('${deSchool.id}','${ind.uid}',${ri},this.checked); D._refreshIndDisplay('${deSchool.id}','${ind.uid}'); D.refreshAllCharts()"><span>${req}</span></label>`; }).join(''); const reqDone=ind.reqs.filter((_,ri)=>getReqCheck(deSchool.id,ind.uid,ri)).length; return `<div class="ind-entry-card" id="iec_${ind.uid}"><div class="ind-entry-head" onclick="toggleIEC('${ind.uid}')"><span class="ind-code">${ind.id}</span><div><div class="ind-text">${ind.text}</div><div class="ind-meta">${ind.standard} • ${reqDone}/${ind.reqs.length} متطلبات</div></div><div class="ind-progress-mini"><div class="ipm-bar"><div class="ipm-fill" id="ipmf_${ind.uid}" style="width:${score}%"></div></div><div class="ipm-pct" id="ipmp_${ind.uid}">${fmt(score)}٪</div></div></div><div class="ind-entry-body"><div style="font-size:.8rem;font-weight:800;color:var(--s5);margin-bottom:8px">📋 متطلبات المؤشر (${ind.reqs.length})</div>${reqsHTML}<div style="margin-top:12px"><div class="score-row"><span class="score-label">الدرجة:</span><div class="stepper"><button class="st-btn sm" onclick="stDE('${deSchool.id}','${ind.uid}',-1)" title="-1">◀◀</button><button class="st-btn" onclick="stDE('${deSchool.id}','${ind.uid}',-0.25)" title="-0.25">◀</button><input class="st-val" type="text" inputmode="decimal" id="sl_${ind.uid}" value="${fmt(score)}" onblur="stDECommit('${deSchool.id}','${ind.uid}')" onkeydown="if(event.key==='Enter')stDECommit('${deSchool.id}','${ind.uid}')"><button class="st-btn" onclick="stDE('${deSchool.id}','${ind.uid}',0.25)" title="+0.25">▶</button><button class="st-btn sm" onclick="stDE('${deSchool.id}','${ind.uid}',1)" title="+1">▶▶</button></div><span class="score-val" id="sv_${ind.uid}">${fmt(score)}٪</span></div></div><div style="font-size:.78rem;font-weight:800;color:var(--ink3);margin-top:8px;margin-bottom:4px">📝 ملاحظات وشواهد</div><textarea class="notes-area" placeholder="أضف ملاحظاتك والشواهد الداعمة..." onchange="setNotes('${deSchool.id}','${ind.uid}',this.value)">${notes}</textarea><div style="display:flex;gap:8px;align-items:center;margin-top:10px"><button class="save-btn" onclick="saveUserData(); document.getElementById('savedStatus').innerHTML='<span class=\'saved-badge\'>✅ تم الحفظ</span>'; setTimeout(()=>document.getElementById('savedStatus').innerHTML='',2000); D.refreshAllCharts()">💾 حفظ وتحديث</button></div></div></div>`; }).join(''); document.getElementById('deMain').innerHTML=`<div class="de-school-header"><div class="de-school-info"><h3>${deSchool.name}</h3><p><span class="sch-lv ${lvClass(deSchool.level)}">${deSchool.level}</span> <span class="sp ${sc2}">${sl}</span></p></div><div class="dom-sum-bar">${domSumBar}</div><div class="de-score-big"><span>${fmt(ov)}٪</span><small>الإنجاز الكلي</small></div></div><div class="dom-tabs">${domTabsHTML}</div><div style="font-size:.8rem;color:var(--ink3);font-weight:700;margin-bottom:10px">${DICONS[deDomain]} ${deDomain} — ${domInds.length} مؤشرات</div>${indsHTML}`; },
   _refreshIndDisplay(sid,uid){ const score=getScore(sid,uid); const ipmf=document.getElementById(`ipmf_${uid}`); if(ipmf)ipmf.style.width=score+'%'; const ipmp=document.getElementById(`ipmp_${uid}`); if(ipmp)ipmp.textContent=fmt(score)+'٪'; const sl=document.getElementById(`sl_${uid}`); if(sl)sl.value=fmt(score); const sv=document.getElementById(`sv_${uid}`); if(sv)sv.textContent=fmt(score)+'٪'; const ind=INDS.find(i=>i.uid===uid); if(ind){ const card=document.getElementById(`iec_${uid}`); if(card)card.querySelectorAll('.req-row').forEach((row,ri)=>{ const c=getReqCheck(sid,uid,ri); row.classList.toggle('checked',c); const cb=row.querySelector('input'); if(cb)cb.checked=c; }); } }
 };
 
@@ -947,7 +886,184 @@ function closeDet(){ document.getElementById('detOv').classList.remove('open'); 
 function toggleIEC(uid){ const c=document.getElementById('iec_'+uid); if(c)c.classList.toggle('open'); }
 function showCell(sid,uid,e){ const sc=SCHOOLS.find(s=>s.id===sid),ind=INDS.find(i=>i.uid===uid); if(!sc||!ind)return; const v=getScore(sid,uid); const t=document.getElementById('tip'); t.innerHTML=`<b>${sc.name}</b><br>${ind.text}<br><b style="color:${v>=80?'#4caf7d':v>=70?'#4a90d9':v>=60?'#fbbf24':'#f87171'}">${fmt(v)}٪</b>`; t.style.display='block'; t.style.top=(e.clientY-75)+'px'; t.style.right=(window.innerWidth-e.clientX+10)+'px'; setTimeout(()=>t.style.display='none',2500); }
 document.addEventListener('click',e=>{if(!e.target.closest('.det-panel')&&!e.target.closest('.sch-card')&&!e.target.closest('.lb-row')&&!e.target.closest('.hm-cell'))document.getElementById('detOv').classList.remove('open');});
-window.addEventListener('DOMContentLoaded',()=>{ D.init(); if(!Auth.checkSession()){/* overlay stays */} });
+window.addEventListener('DOMContentLoaded',()=>{ D.init(); if(!Auth.checkSession()){/* overlay stays */} SY.initBC(); SY.checkLink(); SY._st('وضع محلي'); });
+
+// ══ SY — نظام المزامنة (آمن - لا يمس Auth أو D) ══════════
+const SY={
+  _st(msg,cls){
+    const d=document.getElementById('syncDot'),t=document.getElementById('syncTxt');
+    if(d){d.className='sync-dot '+(cls||'');}
+    if(t)t.textContent=msg;
+  },
+
+  // تصدير
+  exp(){
+    try{
+      const b={v:2,ts:new Date().toISOString(),
+        ud:JSON.parse(localStorage.getItem('bish_supervisor_data_v1')||'{}'),
+        bl:JSON.parse(localStorage.getItem('bish_baseline_external_v2')||'{}'),
+        pk:JSON.parse(localStorage.getItem('bish_picker_bl')||'{}')};
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([JSON.stringify(b,null,2)],{type:'application/json'}));
+      a.download='بيانات_بيش_'+new Date().toLocaleDateString('ar-SA').replace(/\//g,'-')+'.json';
+      a.click();
+      this._st('✅ تم التصدير — شارك الملف مع فريقك','ok');
+      setTimeout(()=>this._st('وضع محلي'),4000);
+    }catch(e){alert('خطأ في التصدير');}
+  },
+
+  // استيراد من ملف
+  showImp(){document.getElementById('sy_file').click();},
+  impFile(inp){
+    const f=inp.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=e=>{try{this._apply(JSON.parse(e.target.result));}catch(e){alert('❌ ملف غير صالح');}};
+    r.readAsText(f); inp.value='';
+  },
+
+  // رابط
+  copyLink(){
+    try{
+      const b={v:2,ts:new Date().toISOString(),
+        ud:JSON.parse(localStorage.getItem('bish_supervisor_data_v1')||'{}'),
+        bl:JSON.parse(localStorage.getItem('bish_baseline_external_v2')||'{}')};
+      const enc=btoa(encodeURIComponent(JSON.stringify(b)));
+      if(enc.length>15000){alert('البيانات كبيرة جداً — استخدم التصدير كملف');return;}
+      navigator.clipboard.writeText(location.href.split('#')[0]+'#sy='+enc)
+        .then(()=>{this._st('🔗 تم نسخ الرابط','ok');setTimeout(()=>this._st('وضع محلي'),4000);});
+    }catch(e){alert('تعذّر إنشاء الرابط');}
+  },
+
+  // تصفير
+  reset(){
+    if(!confirm('تصفير جميع البيانات على هذا الجهاز؟'))return;
+    ['bish_supervisor_data_v1','bish_baseline_external_v2','bish_picker_bl'].forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  },
+
+  // تطبيق الاستيراد بالدمج
+  _apply(data){
+    if(!data||!data.v){alert('❌ بيانات غير صالحة');return;}
+    let merged=0;
+    // userData
+    if(data.ud){
+      let ud={};try{ud=JSON.parse(localStorage.getItem('bish_supervisor_data_v1')||'{}');}catch(e){}
+      Object.keys(data.ud).forEach(sid=>{
+        const src=data.ud[sid];
+        if(typeof src==='object'&&src!==null){
+          if(!ud[sid])ud[sid]={};
+          Object.keys(src).forEach(uid=>{
+            const inc=parseFloat(src[uid])||0, cur=parseFloat(ud[sid][uid])||0;
+            if(inc>cur){ud[sid][uid]=src[uid];merged++;}
+          });
+        }
+      });
+      localStorage.setItem('bish_supervisor_data_v1',JSON.stringify(ud));
+    }
+    // baseline
+    if(data.bl){
+      let bl={};try{bl=JSON.parse(localStorage.getItem('bish_baseline_external_v2')||'{}');}catch(e){}
+      Object.keys(data.bl).forEach(sid=>{
+        if(!bl[sid])bl[sid]={};
+        const s=data.bl[sid];
+        if(s.overall!==undefined)bl[sid].overall=s.overall;
+        if(s.domains)Object.assign(bl[sid].domains=bl[sid].domains||{},s.domains);
+        if(s.inds)Object.assign(bl[sid].inds=bl[sid].inds||{},s.inds);
+      });
+      localStorage.setItem('bish_baseline_external_v2',JSON.stringify(bl));
+    }
+    const when=data.ts?new Date(data.ts).toLocaleString('ar-SA'):'—';
+    this._st(`✅ تم الدمج — ${merged} قيمة (${when})`,'ok');
+    setTimeout(()=>{this._st('وضع محلي');location.reload();},2000);
+  },
+
+  // فحص رابط عند التحميل
+  checkLink(){
+    try{
+      const h=location.hash;
+      if(!h.startsWith('#sy='))return;
+      const data=JSON.parse(decodeURIComponent(atob(h.replace('#sy=',''))));
+      history.replaceState(null,'',location.pathname);
+      if(confirm('📥 يوجد بيانات في الرابط ('+( data.ts?new Date(data.ts).toLocaleString('ar-SA'):'—')+'). استيراد؟'))
+        this._apply(data);
+    }catch(e){}
+  },
+
+  // مزامنة تبويبات المتصفح
+  initBC(){
+    try{
+      this._bc=new BroadcastChannel('bish_sync_v1');
+      this._bc.onmessage=e=>{
+        if(e.data==='reload'&&document.visibilityState==='visible'){
+          this._st('🔄 تحديث من تبويب آخر','busy');
+          setTimeout(()=>location.reload(),800);
+        }
+      };
+    }catch(e){}
+  },
+  ping(){try{if(this._bc)this._bc.postMessage('reload');}catch(e){}},
+};
+
+// بث التحديثات للتبويبات عند الحفظ
+const _origSave=saveUserData;
+function saveUserData(){_origSave();try{SY.ping();}catch(e){}}
+
+
+// ══ STEPPER — دوال العداد الآلي ══════════════════════════════
+function _clamp(v){return parseFloat(Math.min(100,Math.max(0,v)).toFixed(2));}
+function _numVal(id){const e=document.getElementById(id);return e?(parseFloat(e.value)||0):0;}
+
+/* ── تبويب الإدخال ── */
+function stDE(sid,uid,d){
+  const e=document.getElementById('sl_'+uid);if(!e)return;
+  const nv=_clamp(parseFloat((_numVal('sl_'+uid)+d).toFixed(2)));
+  e.value=fmt(nv);
+  setScore(sid,uid,nv);D._refreshIndDisplay(sid,uid);D.refreshAllCharts();
+}
+function stDECommit(sid,uid){
+  const e=document.getElementById('sl_'+uid);if(!e)return;
+  const v=toNumClamped(e.value,0,100);const nv=v!==null?v:0;
+  e.value=fmt(nv);setScore(sid,uid,nv);D._refreshIndDisplay(sid,uid);D.refreshAllCharts();
+}
+
+/* ── خط الأساس: مؤشر ── */
+function stBLInd(sid,uid,d){
+  const e=document.getElementById('blin_'+uid);if(!e)return;
+  const cur=e.value===''?0:(parseFloat(e.value)||0);
+  const nv=_clamp(parseFloat((cur+d).toFixed(2)));
+  e.value=fmt(nv);onBlIndInput(sid,uid,nv);
+}
+function stBLIndC(sid,uid){
+  const e=document.getElementById('blin_'+uid);if(!e)return;
+  const v=toNumClamped(e.value,0,100);
+  if(v!==null){e.value=fmt(v);onBlIndInput(sid,uid,v);}else{e.value='';onBlIndInput(sid,uid,'');}
+}
+
+/* ── خط الأساس: مجال ── */
+function stBLDom(sid,d,delta){
+  const e=document.getElementById('bldom_'+d);if(!e)return;
+  const cur=e.value===''?0:(parseFloat(e.value)||0);
+  e.value=fmt(_clamp(parseFloat((cur+delta).toFixed(2))));
+}
+function stBLDomC(sid,d){
+  const e=document.getElementById('bldom_'+d);if(!e)return;
+  const v=toNumClamped(e.value,0,100);
+  e.value=v!==null?fmt(v):'';onBlDomSave(sid,d);
+}
+
+/* ── خط الأساس: المعدل العام ── */
+function stBLOv(sid,d){
+  const e=document.getElementById('blOvInp');if(!e)return;
+  const cur=e.value===''?0:(parseFloat(e.value)||0);
+  e.value=fmt(_clamp(parseFloat((cur+d).toFixed(2))));
+  onBlOvSave(sid);
+}
+function stBLOvC(sid){
+  const e=document.getElementById('blOvInp');if(!e)return;
+  const v=toNumClamped(e.value,0,100);
+  e.value=v!==null?fmt(v):'';onBlOvSave(sid);
+}
+
 </script>
 </body>
 </html>
